@@ -1,21 +1,18 @@
-import type { Preview } from '@storybook/react-vite'
+// .storybook/preview.ts
+import type { Preview } from '@storybook/react'
+import '../src/index.css'
 
 const preview: Preview = {
   parameters: {
-    controls: {
-      matchers: {
-       color: /(background|color)$/i,
-       date: /Date$/i,
-      },
+    backgrounds: {
+      default: 'page-light',
+      values: [
+        { name: 'page-light',  value: '#f0f4f5' },
+        { name: 'page-darker', value: '#e4ebec' },
+        { name: 'white',       value: '#ffffff' },
+      ],
     },
-
-    a11y: {
-      // 'todo' - show a11y violations in the test UI only
-      // 'error' - fail CI on a11y violations
-      // 'off' - skip a11y checks entirely
-      test: 'todo'
-    }
+    controls: { matchers: { color: /(background|color)$/i, date: /Date$/i } },
   },
-};
-
-export default preview;
+}
+export default preview
