@@ -12,9 +12,9 @@ const buttonVariants = cva(
         chip:      'bg-transparent border-[1.5px] border-accent-1-900 text-accent-1-900 hover:bg-accent-1-100 rounded-full focus-visible:ring-accent-1-800',
       },
       size: {
-        s: 'h-[30px] px-3 py-1.5 text-[13px] rounded-lg',
-        m: 'h-9 px-4 py-2 text-[14px] rounded-xl',
-        l: 'h-[38px] px-[22px] py-[9px] text-[14px] rounded-xl',
+        s: 'h-[30px] px-3 py-1.5 text-[13px] rounded-md',
+        m: 'h-9 px-4 py-2 text-[14px] rounded-md',
+        l: 'h-[38px] px-[22px] py-[9px] text-[14px] rounded-md',
       },
     },
     compoundVariants: [

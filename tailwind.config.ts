@@ -1,4 +1,40 @@
 // tailwind.config.ts
+//
+// ─── DS TOKEN → TAILWIND CLASS REFERENCE ────────────────────────────────────
+//
+// RADIUS (DS variable → Tailwind class → px)
+//   radius/sm    → rounded-sm    → 4px   form inputs, small badges
+//   radius/md    → rounded-md    → 8px   buttons, rows, dropdown rows, tags
+//   radius/lg    → rounded-lg    → 12px  dropdowns, cards, bubbles
+//   radius/xl    → rounded-xl    → 16px  panels, larger cards
+//   Radius/24    → rounded-2xl   → 24px  bottom sheets, modals, page containers
+//   radius/full  → rounded-full  → 9999px pills, chips, avatars, icon buttons
+//
+// BORDER WIDTH
+//   stroke/sm    → border-sm     → 1px   dividers, card borders
+//   stroke/md    → border-md     → 1.5px button strokes, active states
+//
+// ELEVATION (shadow)
+//   Elevation-1  → shadow-elevation-1    cards, small overlays
+//   Elevation-2  → shadow-elevation-2    dropdowns, menus
+//   Elevation-4  → shadow-elevation-4    modals, sheets
+//
+// TYPOGRAPHY
+//   Caption      → text-caption          11px/14px regular   — labels, timestamps
+//   Caption-md   → text-caption-md       12px/16px semibold  — section headers
+//   Body-sm      → text-body-sm          13px/18px regular   — secondary text
+//   Body         → text-body             14px/18px regular   — primary body
+//   Body-bold    → text-body-bold        14px/20px bold      — strong body
+//   Body-semi    → text-body-semi        14px/20px semibold  — interactive labels
+//   Heading      → text-heading          16px/22px bold      — card titles
+//   Heading-lg   → text-heading-lg       18px/24px bold      — page headings
+//
+// FONT FAMILIES
+//   Nunito Sans  → font-sans    headings, buttons, labels
+//   Inter        → font-body    body text, captions, data
+//
+// ────────────────────────────────────────────────────────────────────────────
+
 import type { Config } from 'tailwindcss'
 
 export default {
