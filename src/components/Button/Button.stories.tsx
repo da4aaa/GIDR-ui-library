@@ -8,8 +8,9 @@ const meta: Meta<typeof Button> = {
   component: Button,
   tags: ['autodocs'],
   argTypes: {
-    variant: { control: 'select', options: ['primary','secondary','chip'] },
+    variant: { control: 'select', options: ['primary','secondary','chip','link'] },
     size:    { control: 'select', options: ['s','m','l'] },
+    color:   { control: 'select', options: ['default','error','purple'] },
   },
 }
 export default meta
@@ -39,6 +40,21 @@ export const IconButtons: Story = {
       <IconButton icon={X} label="Close" size="s" />
       <IconButton icon={X} label="Close" size="m" />
       <IconButton icon={X} label="Close" size="l" />
+    </div>
+  ),
+}
+
+export const LinkButton: Story = { args: { variant: 'link', children: 'Learn more', size: 'm' } }
+export const ErrorButton: Story = { args: { variant: 'primary', color: 'error', children: 'Delete', size: 'm' } }
+export const PurpleButton: Story = { args: { variant: 'primary', color: 'purple', children: 'Upgrade', size: 'm' } }
+export const AllVariants: Story = {
+  render: () => (
+    <div className="flex gap-3 items-center flex-wrap">
+      <Button variant="primary">Primary</Button>
+      <Button variant="secondary">Secondary</Button>
+      <Button variant="primary" color="error">Error</Button>
+      <Button variant="primary" color="purple">Purple</Button>
+      <Button variant="link">Link</Button>
     </div>
   ),
 }
