@@ -13,13 +13,13 @@ const buttonVariants = cva(
       },
       size: {
         s: 'h-[30px] px-3 py-1.5 text-[13px] rounded-lg',
-        m: 'h-9 px-4 py-2 text-sm rounded-xl',
-        l: 'h-[38px] px-[22px] py-[9px] text-sm rounded-xl',
+        m: 'h-9 px-4 py-2 text-[14px] rounded-xl',
+        l: 'h-[38px] px-[22px] py-[9px] text-[14px] rounded-xl',
       },
     },
     compoundVariants: [
       { variant: 'chip', size: 's', class: 'h-[30px] px-3 py-1.5 text-[13px]' },
-      { variant: 'chip', size: 'm', class: 'h-9 px-4 py-2 text-sm' },
+      { variant: 'chip', size: 'm', class: 'h-9 px-4 py-2 text-[14px]' },
     ],
     defaultVariants: { variant: 'primary', size: 'm' },
   }

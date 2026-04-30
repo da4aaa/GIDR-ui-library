@@ -43,7 +43,7 @@ export const WithCheckboxes: Story = {
   render: () => (
     <Dropdown>
       <DropdownSection label="Filter by tag" />
-      <DropdownRow label="HVAC" type="with-checkbox" state="selected" checked />
+      <DropdownRow label="HVAC" type="with-checkbox" state="selected" />
       <DropdownRow label="Electrical" type="with-checkbox" />
       <DropdownRow label="Plumbing" type="with-checkbox" />
     </Dropdown>

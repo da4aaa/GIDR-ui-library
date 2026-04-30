@@ -25,7 +25,6 @@ interface DropdownRowProps extends VariantProps<typeof rowVariants> {
   icon?: LucideIcon
   avatarSrc?: string
   avatarInitials?: string
-  checked?: boolean
   className?: string
   onClick?: () => void
 }
@@ -34,7 +33,19 @@ export function DropdownRow({ label, type = 'default', icon: Icon, avatarSrc, av
   const isSelected = state === 'selected'
 
   return (
-    <div role="option" aria-selected={isSelected} className={cn(rowVariants({ state }), className)} onClick={onClick}>
+    <div
+      role="option"
+      aria-selected={isSelected}
+      tabIndex={state === 'disabled' ? -1 : 0}
+      className={cn(rowVariants({ state }), className)}
+      onClick={onClick}
+      onKeyDown={(e) => {
+        if ((e.key === 'Enter' || e.key === ' ') && state !== 'disabled') {
+          e.preventDefault()
+          onClick?.()
+        }
+      }}
+    >
       {type === 'with-avatar' && (
         <Avatar
           type={avatarSrc ? 'image' : 'letter'}

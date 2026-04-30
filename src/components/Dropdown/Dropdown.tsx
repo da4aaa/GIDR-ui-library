@@ -16,12 +16,13 @@ export function Dropdown({ hasSearch = false, searchPlaceholder = 'Search...', s
       {hasSearch && (
         <>
           <div className="px-1.5 pb-3">
-            <div className="flex items-center gap-2 border border-neutral-500 rounded-sm px-3 py-1.5 text-sm text-neutral-700">
+            <div className="flex items-center gap-2 border border-neutral-500 rounded-sm px-3 py-1.5 text-[14px] text-neutral-700">
               <input
                 type="text"
                 value={searchValue}
                 onChange={e => onSearchChange?.(e.target.value)}
                 placeholder={searchPlaceholder}
+                aria-label={searchPlaceholder}
                 className="flex-1 outline-none text-[14px] font-body placeholder:text-neutral-500 bg-transparent"
               />
               <Search size={16} className="text-neutral-500 shrink-0" strokeWidth={1.5} />
@@ -30,7 +31,7 @@ export function Dropdown({ hasSearch = false, searchPlaceholder = 'Search...', s
           <div className="h-px bg-neutral-300 mb-2" />
         </>
       )}
-      <div className="flex flex-col gap-0.5 overflow-y-auto">
+      <div role="listbox" className="flex flex-col gap-0.5 overflow-y-auto">
         {children}
       </div>
     </div>

@@ -29,6 +29,7 @@ export function QuickReplyChip({ label, icon: Icon, state = 'default', onClick, 
       type="button"
       onClick={onClick}
       disabled={state === 'disabled'}
+      aria-pressed={state === 'selected'}
       className={cn(chipVariants({ state }), className)}
     >
       {Icon && <Icon size={14} strokeWidth={1.5} />}
