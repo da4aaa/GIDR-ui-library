@@ -14,6 +14,14 @@ export interface Proto {
 
 export const PROTOTYPES: Proto[] = [
   {
+    id: 'onboarding',
+    name: 'Onboarding',
+    description: 'App launch animation → login screen. Splash logo moves to login position.',
+    status: 'in-progress',
+    branch: 'proto/onboarding',
+    createdAt: '2026-05-05',
+  },
+  {
     id: 'chat-screen',
     name: 'Chat Screen',
     description: 'Header, AI/user message thread, input bar. Core GIDR conversation flow.',
