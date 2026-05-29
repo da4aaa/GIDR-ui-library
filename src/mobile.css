@@ -1,0 +1,47 @@
+/* ─── Mobile app global standards ───────────────────────────────────────────── */
+
+/* Lock body — no scroll, no bounce */
+html, body {
+  position: fixed;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  overscroll-behavior: none;
+  -webkit-overflow-scrolling: touch;
+}
+
+#root {
+  width: 100%;
+  height: 100%;
+  position: fixed;
+  top: 0;
+  left: 0;
+  overflow: hidden;
+}
+
+/* No tap highlight flash on iOS */
+* {
+  -webkit-tap-highlight-color: transparent;
+  -webkit-touch-callout: none;
+}
+
+/* Prevent text selection on UI elements */
+button, a, label {
+  user-select: none;
+  -webkit-user-select: none;
+}
+
+/* Prevent double-tap zoom — makes taps instant */
+button, a, input, select, textarea {
+  touch-action: manipulation;
+}
+
+/* Prevent iOS auto-zoom on input focus (requires font-size >= 16px) */
+input, textarea, select {
+  font-size: 16px !important;
+}
+
+/* Smooth momentum scrolling on iOS for scroll containers */
+.overflow-y-auto, .overflow-y-scroll {
+  -webkit-overflow-scrolling: touch;
+}
