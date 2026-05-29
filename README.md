@@ -3,7 +3,9 @@
 ## Repo structure
 
 ### `src/components/` — Design system component library
-A set of 21 reusable React components built to the GIDR design tokens: Avatar, Badge, Button, Checkbox, Dropdown, Input, Tabs, Toast, Cards, Chat bubbles, and more. Each component has a Storybook story. This is the foundation for production dev work — components are copy-paste ready (shadcn-style) and mapped to the Figma design system tokens.
+A set of 21 reusable React components: Avatar, Badge, Button, Checkbox, Dropdown, Input, Tabs, Toast, Cards, Chat bubbles, and more. Each component has a Storybook story.
+
+> **Note:** This component library is outdated. The latest approved UI lives entirely in the prototype (`OnboardingScreenAnthropic.tsx`) and has not yet been migrated back into the component library.
 
 ### `src/prototype/screens/OnboardingScreenAnthropic.tsx` — UX prototype
 A single self-contained file that implements the full mobile app flow:
@@ -28,16 +30,3 @@ Configured to build the prototype app (`vite build` → `dist/`), not Storybook.
 | Prototype | https://ui-library-henna-psi.vercel.app |
 | Storybook (component catalog) | https://gidr-ui-library.netlify.app |
 
-## Stack
-
-React 18 + TypeScript + Tailwind v3 + Framer Motion + Vite
-
-> **Note:** Do not upgrade to Tailwind v4 — it uses CSS-based config incompatible with `tailwind.config.ts`.
-
-## Dev
-
-```bash
-npm run dev -- --host     # Prototype dev server (exposed to network for phone testing)
-npm run storybook         # Storybook on port 6006
-npm run build             # Production build
-```
