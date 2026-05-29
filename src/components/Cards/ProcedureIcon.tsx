@@ -6,9 +6,9 @@ export type ProcedureIconType =
   | 'Mechanical' | 'Plumbing' | 'Maintenance' | 'Installation' | 'Calibration'
 
 const ASSETS: Record<ProcedureIconType, string> = {
-  Network:       '/icons/ico-1.png',
-  Safety:        '/icons/ico-3.png',
-  Electrical:    '/icons/ico-2.png',
+  Network:       '/icons/ico-1.svg',
+  Safety:        '/icons/ico-3.svg',
+  Electrical:    '/icons/ico-2.svg',
   Documentation: 'https://www.figma.com/api/mcp/asset/48d4f3cd-3524-49a7-bf2f-91eb39207a3a',
   Gas:           'https://www.figma.com/api/mcp/asset/2f7456fd-60e5-4296-8693-7923060beaa3',
   HVAC:          'https://www.figma.com/api/mcp/asset/de5dd4ca-ee2e-4635-b40b-483fbacd737d',

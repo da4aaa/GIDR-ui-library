@@ -1060,7 +1060,7 @@ function ProcedureSummaryScreen({ title, startedAt, onClose }: { title: string; 
                 <button
                   key={label}
                   className="flex-1 flex items-center justify-center gap-2 h-[40px]"
-                  style={{ border: `1.5px solid ${AN.coral}`, borderRadius: 8, background: 'transparent', fontFamily: AN.font, fontSize: 13, fontWeight: 500, color: AN.coral }}
+                  style={{ border: `1.5px solid ${AN.coral}`, borderRadius: 9999, background: 'transparent', fontFamily: AN.font, fontSize: 13, fontWeight: 500, color: AN.coral }}
                 >
                   <Copy size={14} strokeWidth={1.5} />
                   {label}
@@ -1387,35 +1387,162 @@ function GuidedProcedureScreen({ title, onClose, instanceInfo }: { title: string
       >
         {voiceMode ? (
           <>
-            {/* AI message — directly on dotted bg */}
-            <div className="flex flex-col gap-2 pt-1">
-              <p style={{ fontFamily: AN.font, fontSize: 16, fontWeight: 700, color: AN.ink, lineHeight: 1.3 }}>
+            {/* Past runs + divider (same as normal chat) */}
+            {instanceInfo && (
+              <>
+                <div className="flex flex-col gap-2">
+                  {PAST_RUNS.slice(0, instanceInfo.current - 1).map(run => (
+                    <PastRunEntry key={run.runNumber} {...run} onOpenSummary={() => setPastSummaryRun(run)} />
+                  ))}
+                </div>
+                <div className="flex items-center gap-3">
+                  <div className="flex-1 h-px" style={{ background: AN.border }} />
+                  <span style={{ fontFamily: AN.font, fontSize: 11, fontWeight: 500, color: AN.muted, letterSpacing: '0.06em', textTransform: 'uppercase' }}>Run {instanceInfo.current}</span>
+                  <div className="flex-1 h-px" style={{ background: AN.border }} />
+                </div>
+              </>
+            )}
+            {/* Previous chat messages */}
+            {messages.map(msg => <MsgBubble key={msg.id} msg={msg} />)}
+
+            {/* Current step content */}
+            <div className="flex flex-col gap-3 pt-1">
+              <p style={{ fontFamily: AN.font, fontSize: 15, fontWeight: 600, color: AN.ink, lineHeight: 1.3 }}>
                 {PROCEDURE_STEPS[step].title}
               </p>
-              <p style={{ fontFamily: AN.font, fontSize: 14, color: AN.textSecondary, lineHeight: 1.6 }}>
-                {PROCEDURE_STEPS[step].description.split('\n\n')[0]}
-              </p>
-              <div className="flex items-center gap-3 mt-1">
-                <button style={{ padding: 0, background: 'none', border: 'none', cursor: 'pointer' }}>
-                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke={AN.muted} strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>
-                </button>
-                <button style={{ padding: 0, background: 'none', border: 'none', cursor: 'pointer' }}>
-                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke={AN.muted} strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"><path d="M14 9V5a3 3 0 0 0-3-3l-4 9v11h11.28a2 2 0 0 0 2-1.7l1.38-9a2 2 0 0 0-2-2.3z"/><path d="M7 22H4a2 2 0 0 1-2-2v-7a2 2 0 0 1 2-2h3"/></svg>
-                </button>
-                <button style={{ padding: 0, background: 'none', border: 'none', cursor: 'pointer' }}>
-                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke={AN.muted} strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"><path d="M10 15v4a3 3 0 0 0 3 3l4-9V2H5.72a2 2 0 0 0-2 1.7l-1.38 9a2 2 0 0 0 2 2.3z"/><path d="M17 2h2.67A2.31 2.31 0 0 1 22 4v7a2.31 2.31 0 0 1-2.33 2H17"/></svg>
-                </button>
-                <span style={{ fontFamily: AN.font, fontSize: 12, color: AN.coral, fontWeight: 500 }}>12 sources</span>
-              </div>
+              {PROCEDURE_STEPS[step].description.split('\n\n').map((para, i) => (
+                <p key={i} style={{ fontFamily: AN.font, fontSize: 13, color: AN.textSecondary, lineHeight: 1.65 }}>{para}</p>
+              ))}
+              {PROCEDURE_STEPS[step].image && (
+                <img src={PROCEDURE_STEPS[step].image} alt="" className="w-full object-cover" style={{ borderRadius: 10, border: `1px solid ${AN.border}` }} />
+              )}
+              {PROCEDURE_STEPS[step].photoPrompt && (
+                !hasPhoto ? (
+                  <div className="flex flex-col items-center justify-center gap-3 py-6 cursor-pointer" style={{ border: `1.5px dashed ${AN.borderStrong}`, borderRadius: 12 }} onClick={() => setStepPhotos(prev => ({ ...prev, [step]: true }))}>
+                    <Camera size={26} strokeWidth={1.5} style={{ color: AN.muted }} />
+                    <p style={{ fontFamily: AN.font, fontSize: 13, color: AN.muted, textAlign: 'center', lineHeight: 1.5 }}>Tap to capture or upload</p>
+                    <div className="flex gap-2">
+                      {['Take photo', 'Upload'].map(label => (
+                        <button key={label} className="px-4 h-[34px]" style={{ border: `1.5px solid ${AN.borderStrong}`, borderRadius: 9999, fontFamily: AN.font, fontSize: 12, fontWeight: 500, color: AN.textSecondary, background: 'transparent' }}>{label}</button>
+                      ))}
+                    </div>
+                  </div>
+                ) : (
+                  <div className="relative">
+                    <img src="https://picsum.photos/seed/component/400/200" alt="" className="w-full object-cover" style={{ borderRadius: 10, border: `1px solid ${AN.border}` }} />
+                    <button className="absolute top-2 right-2 w-7 h-7 flex items-center justify-center" style={{ background: 'rgba(31,25,21,0.55)', borderRadius: 9999 }} onClick={() => setStepPhotos(prev => ({ ...prev, [step]: false }))}>
+                      <X size={13} style={{ color: '#FFFFFE' }} />
+                    </button>
+                  </div>
+                )
+              )}
+              {PROCEDURE_STEPS[step].warning && (
+                <div className="flex flex-col gap-2">
+                  <div className="flex gap-3 px-4 py-3" style={{ background: '#FEF3E2', border: '1px solid #F59E0B', borderRadius: 10 }}>
+                    <AlertTriangle size={16} strokeWidth={1.5} style={{ color: '#B45309', flexShrink: 0, marginTop: 1 }} />
+                    <p style={{ fontFamily: AN.font, fontSize: 13, color: '#92400E', lineHeight: 1.55 }}>{PROCEDURE_STEPS[step].warning}</p>
+                  </div>
+                  {PROCEDURE_STEPS[step].acknowledgement && (
+                    <button className="w-full flex items-center gap-3 px-4 py-3 text-left" style={{ background: hasSelection ? AN.coralLight : AN.surface, border: `1.5px solid ${hasSelection ? AN.coral : AN.borderStrong}`, borderRadius: 10 }} onClick={() => toggleOption(0)}>
+                      <div style={{ width: 20, height: 20, borderRadius: 5, flexShrink: 0, background: hasSelection ? AN.coral : 'transparent', border: `1.5px solid ${hasSelection ? AN.coral : AN.borderStrong}`, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                        {hasSelection && <span style={{ color: '#FFFFFE', fontSize: 11, fontWeight: 700, lineHeight: 1 }}>✓</span>}
+                      </div>
+                      <span style={{ fontFamily: AN.font, fontSize: 13, color: AN.ink, lineHeight: 1.45 }}>{PROCEDURE_STEPS[step].acknowledgement}</span>
+                    </button>
+                  )}
+                </div>
+              )}
+              {currentInputPlaceholder && (
+                <input value={currentInput} onChange={e => setStepInputs(prev => ({ ...prev, [step]: e.target.value }))} placeholder={currentInputPlaceholder} className="w-full outline-none transition-all"
+                  style={{ background: AN.surface, border: `1px solid ${AN.borderStrong}`, borderRadius: 8, fontFamily: AN.font, fontSize: 15, color: AN.ink, height: 44, padding: '10px 14px' }}
+                  onFocus={e => { e.currentTarget.style.borderColor = AN.coral; e.currentTarget.style.boxShadow = `0 0 0 3px rgba(147,85,209,0.12)` }}
+                  onBlur={e => { e.currentTarget.style.borderColor = AN.borderStrong; e.currentTarget.style.boxShadow = 'none' }}
+                />
+              )}
+              {currentMeasurements && (
+                <div className="flex flex-col gap-3">
+                  {currentMeasurements.map((m, i) => (
+                    <div key={i} className="flex flex-col gap-1.5">
+                      <label style={{ fontFamily: AN.font, fontSize: 12, fontWeight: 500, color: AN.muted }}>{m.label}</label>
+                      <div className="flex items-center overflow-hidden" style={{ border: `1px solid ${AN.borderStrong}`, borderRadius: 8 }}>
+                        <input type="number" value={measurementValues[i] ?? ''} onChange={e => setStepMeasurements(prev => { const arr = [...(prev[step] ?? [])]; arr[i] = e.target.value; return { ...prev, [step]: arr } })} placeholder="0" className="flex-1 outline-none"
+                          style={{ background: AN.surface, fontFamily: AN.font, fontSize: 15, color: AN.ink, height: 44, padding: '10px 14px' }}
+                          onFocus={e => { e.currentTarget.parentElement!.style.borderColor = AN.coral; e.currentTarget.parentElement!.style.boxShadow = `0 0 0 3px rgba(147,85,209,0.12)` }}
+                          onBlur={e => { e.currentTarget.parentElement!.style.borderColor = AN.borderStrong; e.currentTarget.parentElement!.style.boxShadow = 'none' }}
+                        />
+                        <div className="flex items-center justify-center px-4 shrink-0" style={{ height: 44, background: AN.bgLight, borderLeft: `1px solid ${AN.borderStrong}` }}>
+                          <span style={{ fontFamily: AN.font, fontSize: 13, fontWeight: 500, color: AN.textSecondary }}>{m.unit}</span>
+                        </div>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              )}
+              {PROCEDURE_STEPS[step].passFail && (
+                <div className="flex flex-col gap-2">
+                  <div className="flex gap-2">
+                    {(['pass', 'fail'] as const).map(val => {
+                      const selected = stepPassFail[step] === val
+                      const isPass = val === 'pass'
+                      return (
+                        <button key={val} className="flex-1 flex items-center justify-center gap-2 h-[60px]"
+                          style={{ background: selected ? (isPass ? '#E8F5ED' : '#FCEAEA') : AN.surface, border: `1.5px solid ${selected ? (isPass ? '#2D7A5E' : '#D84C4C') : AN.borderStrong}`, borderRadius: 10 }}
+                          onClick={() => setStepPassFail(prev => ({ ...prev, [step]: val }))}>
+                          <span style={{ fontSize: 16 }}>{isPass ? '✓' : '✕'}</span>
+                          <span style={{ fontFamily: AN.font, fontSize: 14, fontWeight: 600, color: selected ? (isPass ? '#2D7A5E' : '#D84C4C') : AN.textSecondary }}>{isPass ? 'Pass' : 'Fail'}</span>
+                        </button>
+                      )
+                    })}
+                  </div>
+                  {stepPassFail[step] === 'fail' && (
+                    <textarea value={stepFailNotes[step] ?? ''} onChange={e => setStepFailNotes(prev => ({ ...prev, [step]: e.target.value }))} placeholder="Describe the issue..." rows={3} className="w-full outline-none resize-none"
+                      style={{ background: AN.surface, border: `1px solid ${AN.borderStrong}`, borderRadius: 8, fontFamily: AN.font, fontSize: 13, color: AN.ink, padding: '10px 14px', lineHeight: 1.55 }}
+                      onFocus={e => { e.currentTarget.style.borderColor = AN.coral; e.currentTarget.style.boxShadow = `0 0 0 3px rgba(147,85,209,0.12)` }}
+                      onBlur={e => { e.currentTarget.style.borderColor = AN.borderStrong; e.currentTarget.style.boxShadow = 'none' }}
+                    />
+                  )}
+                </div>
+              )}
+              {currentChecklist && (
+                <div className="flex flex-col gap-2">
+                  {currentChecklist.map((item, i) => {
+                    const checked = currentSelections.includes(i)
+                    return (
+                      <button key={i} className="w-full flex items-center gap-3 px-4 py-3 text-left"
+                        style={{ background: checked ? '#E8F5ED' : AN.surface, border: `1.5px solid ${checked ? '#2D7A5E' : AN.borderStrong}`, borderRadius: 10 }}
+                        onClick={() => toggleOption(i)}>
+                        <div style={{ width: 20, height: 20, borderRadius: 5, flexShrink: 0, background: checked ? '#2D7A5E' : 'transparent', border: `1.5px solid ${checked ? '#2D7A5E' : AN.borderStrong}`, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                          {checked && <span style={{ color: '#FFFFFE', fontSize: 11, fontWeight: 700, lineHeight: 1 }}>✓</span>}
+                        </div>
+                        <span style={{ fontFamily: AN.font, fontSize: 13, color: AN.ink, lineHeight: 1.45 }}>{item}</span>
+                      </button>
+                    )
+                  })}
+                </div>
+              )}
+              {currentOptions && (
+                <div className="flex flex-col gap-2">
+                  {currentOptions.map((option, i) => {
+                    const selected = currentSelections.includes(i)
+                    return (
+                      <button key={i} className="w-full flex items-center gap-3 px-4 py-3 text-left"
+                        style={{ background: selected ? AN.coralLight : AN.surface, border: `1.5px solid ${selected ? AN.coral : AN.borderStrong}`, borderRadius: 10 }}
+                        onClick={() => toggleOption(i)}>
+                        <div style={{ width: 20, height: 20, borderRadius: 5, flexShrink: 0, background: selected ? AN.coral : 'transparent', border: `1.5px solid ${selected ? AN.coral : AN.borderStrong}`, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                          {selected && <span style={{ color: '#FFFFFE', fontSize: 11, lineHeight: 1, fontWeight: 700 }}>✓</span>}
+                        </div>
+                        <span style={{ fontFamily: AN.font, fontSize: 13, color: AN.ink, lineHeight: 1.45 }}>{option}</span>
+                      </button>
+                    )
+                  })}
+                </div>
+              )}
             </div>
+
             {/* Listening indicator */}
-            <div className="flex items-center gap-2.5">
-              <motion.div
-                animate={{ opacity: [0.5, 1, 0.5] }}
-                transition={{ duration: 1.6, repeat: Infinity, ease: 'easeInOut' }}
-                className="w-5 h-5 flex items-center justify-center shrink-0"
-                style={{ borderRadius: 9999, border: `1.5px solid ${AN.coral}` }}
-              >
+            <div className="flex items-center gap-2.5 pb-2">
+              <motion.div animate={{ opacity: [0.5, 1, 0.5] }} transition={{ duration: 1.6, repeat: Infinity, ease: 'easeInOut' }}
+                className="w-5 h-5 flex items-center justify-center shrink-0" style={{ borderRadius: 9999, border: `1.5px solid ${AN.coral}` }}>
                 <svg width="7" height="8" viewBox="0 0 7 8" fill="none"><polygon points="1,0.5 6.5,4 1,7.5" fill={AN.coral} /></svg>
               </motion.div>
               <span style={{ fontFamily: AN.font, fontSize: 14, color: AN.textSecondary }}>Listening ...</span>
