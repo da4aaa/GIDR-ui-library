@@ -1,7 +1,6 @@
 #!/bin/bash
-# Netlify build script
-# main/HEAD → Storybook (component catalog)
-# proto/* → Vite app (flow prototype)
+# gidr-ui-library.netlify.app → always Storybook
+# gidr-prototypes.netlify.app → always Vite prototype app (deployed separately)
 
 BRANCH="${BRANCH:-$(git rev-parse --abbrev-ref HEAD 2>/dev/null)}"
 echo "Building branch: $BRANCH"

@@ -33,7 +33,37 @@
 //   Nunito Sans  → font-sans    headings, buttons, labels
 //   Inter        → font-body    body text, captions, data
 //
-// ────────────────────────────────────────────────────────────────────────────
+// ─── COLOR TIERS ─────────────────────────────────────────────────────────────
+//
+// PRIMITIVES — never use directly in components
+//   neutral, accent-1, accent-2, accent-3, service, bg, avatar
+//   Named after Figma DS groups. Values in hex, sourced from Figma.
+//
+//   ⚠ Tailwind v3 has a built-in `neutral` scale. GIDR's values override
+//   shades 000–900. Tailwind's neutral-50 and neutral-950 still exist as
+//   unused classes — do not use them.
+//
+// SEMANTIC — use these in components
+//   brand, destructive, surface, foreground, muted, placeholder,
+//   border, disabled, status, ring
+//
+//   Values defined as CSS custom properties in src/index.css.
+//   Each CSS var references a primitive hex value with a comment.
+//
+//   Tailwind classes:
+//   bg-brand              bg-brand-hover      bg-brand-subtle
+//   text-foreground       text-muted          text-placeholder
+//   bg-surface-page       bg-surface-base     bg-surface-sunken
+//   bg-destructive        bg-destructive-hover bg-destructive-subtle
+//   border-border         border-border-focus border-border-error
+//   bg-disabled           text-disabled-foreground
+//   bg-status-success     text-status-success-fg
+//   bg-status-warning     text-status-warning-fg
+//   bg-status-error       text-status-error-fg
+//   bg-status-info        text-status-info-fg
+//   ring-ring
+//
+// ─────────────────────────────────────────────────────────────────────────────
 
 import type { Config } from 'tailwindcss'
 
@@ -42,6 +72,9 @@ export default {
   theme: {
     extend: {
       colors: {
+
+        // ─── PRIMITIVES ─────────────────────────────────────────────
+        // Figma DS group: Neutral
         neutral: {
           '000': '#fbfcfd',
           '100': '#f0f4f5',
@@ -54,19 +87,21 @@ export default {
           '800': '#43474a',
           '900': '#1a1a1a',
         },
+        // Figma DS group: Accent-1 (teal — primary brand)
         'accent-1': {
-          '50':  '#f0fbfb',
-          '100': '#e0f5f6',
-          '200': '#b8eced',
-          '300': '#dcf4f3',
-          '400': '#7dd8d9',
-          '500': '#3fc9cb',
-          '600': '#1abecf',
-          '700': '#00bcd0',
-          '800': '#00b4c8',
-          '900': '#33cbcc',
-          'vivid': '#a95eff',
+          '50':   '#f0fbfb',
+          '100':  '#e0f5f6',
+          '200':  '#b8eced',
+          '300':  '#dcf4f3',
+          '400':  '#7dd8d9',
+          '500':  '#3fc9cb',
+          '600':  '#1abecf',
+          '700':  '#00bcd0',
+          '800':  '#00b4c8',
+          '900':  '#33cbcc',
+          'vivid':'#a95eff',
         },
+        // Figma DS group: Accent-2 (blue — info / secondary)
         'accent-2': {
           '50':  '#f0f7ff',
           '100': '#ddeeff',
@@ -79,19 +114,21 @@ export default {
           '800': '#1256b0',
           '900': '#0c4090',
         },
+        // Figma DS group: Accent-3 (purple — tertiary)
         'accent-3': {
-          '50':  '#fbf8fc',
-          '100': '#f7f0fa',
-          '200': '#f0e3f7',
-          '300': '#ead7f4',
-          '400': '#dfc5ed',
-          '500': '#d2afe4',
-          '600': '#c396d9',
-          '700': '#aa72c5',
-          '800': '#704685',
-          '900': '#311f3a',
-          'vivid': '#a95eff',
+          '50':   '#fbf8fc',
+          '100':  '#f7f0fa',
+          '200':  '#f0e3f7',
+          '300':  '#ead7f4',
+          '400':  '#dfc5ed',
+          '500':  '#d2afe4',
+          '600':  '#c396d9',
+          '700':  '#aa72c5',
+          '800':  '#704685',
+          '900':  '#311f3a',
+          'vivid':'#a95eff',
         },
+        // Figma DS group: Service (status colors)
         service: {
           'error-200':   '#fceaea',
           'error-300':   '#fceeee',
@@ -110,10 +147,12 @@ export default {
           'success-800': '#1a7a40',
           'success-900': '#0d4f28',
         },
+        // Figma DS group: Background
         bg: {
           'page-light':  '#f0f4f5',
           'page-darker': '#e4ebec',
         },
+        // Figma DS group: Avatar
         avatar: {
           '1': '#e8734a',
           '2': '#7048c6',
@@ -121,10 +160,74 @@ export default {
           '4': '#27ae60',
           '5': '#eb5757',
         },
+
+        // ─── SEMANTIC TOKENS ────────────────────────────────────────
+        // Values are CSS custom properties defined in src/index.css.
+        // Use these in components — not the primitive groups above.
+
+        // Brand (primary interactive)
+        brand: {
+          DEFAULT:        'var(--color-brand)',
+          hover:          'var(--color-brand-hover)',
+          subtle:         'var(--color-brand-subtle)',
+          'subtle-hover': 'var(--color-brand-subtle-hover)',
+          foreground:     'var(--color-brand-foreground)',
+        },
+
+        // Destructive
+        destructive: {
+          DEFAULT:        'var(--color-destructive)',
+          hover:          'var(--color-destructive-hover)',
+          subtle:         'var(--color-destructive-subtle)',
+          'subtle-hover': 'var(--color-destructive-subtle-hover)',
+          foreground:     'var(--color-destructive-foreground)',
+        },
+
+        // Surfaces
+        surface: {
+          page:   'var(--color-surface-page)',
+          base:   'var(--color-surface-base)',
+          sunken: 'var(--color-surface-sunken)',
+        },
+
+        // Text
+        foreground:  'var(--color-foreground)',
+        muted:       'var(--color-muted)',
+        placeholder: 'var(--color-placeholder)',
+
+        // Border
+        border: {
+          DEFAULT: 'var(--color-border)',
+          strong:  'var(--color-border-strong)',
+          focus:   'var(--color-border-focus)',
+          error:   'var(--color-border-error)',
+        },
+
+        // Disabled
+        disabled: {
+          DEFAULT:    'var(--color-disabled)',
+          foreground: 'var(--color-disabled-foreground)',
+        },
+
+        // Status
+        status: {
+          success:      'var(--color-status-success)',
+          'success-fg': 'var(--color-status-success-fg)',
+          warning:      'var(--color-status-warning)',
+          'warning-fg': 'var(--color-status-warning-fg)',
+          error:        'var(--color-status-error)',
+          'error-fg':   'var(--color-status-error-fg)',
+          info:         'var(--color-status-info)',
+          'info-fg':    'var(--color-status-info-fg)',
+        },
+
+        // Ring (focus ring color)
+        ring: 'var(--color-ring)',
       },
+
       fontFamily: {
-        sans:    ['"Nunito Sans"', 'sans-serif'],
-        body:    ['Inter', 'sans-serif'],
+        sans: ['"Nunito Sans"', 'sans-serif'],
+        body: ['Inter', 'sans-serif'],
       },
       fontSize: {
         'caption':    ['11px', { lineHeight: '14px', fontWeight: '400' }],

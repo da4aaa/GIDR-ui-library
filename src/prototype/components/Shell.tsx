@@ -9,8 +9,8 @@ interface ShellProps {
 
 export function Shell({ children, title, onBack, bg = 'bg-bg-page-light' }: ShellProps) {
   return (
-    <div className="min-h-screen bg-neutral-200 flex items-start justify-center py-10">
-      <div className="w-[375px] min-h-[812px] bg-bg-page-light rounded-[44px] overflow-hidden shadow-[0_24px_80px_rgba(0,0,0,0.25)] flex flex-col relative border border-neutral-300">
+    <div className="h-screen bg-neutral-200 flex items-center justify-center">
+      <div className="w-[375px] h-[calc(100vh-2rem)] max-h-[812px] bg-bg-page-light rounded-[44px] overflow-hidden shadow-[0_24px_80px_rgba(0,0,0,0.25)] flex flex-col relative border border-neutral-300">
         {/* status bar */}
         <div className="flex justify-between items-center px-6 pt-3 pb-1 shrink-0">
           <span className="text-[12px] font-body font-semibold text-neutral-900">9:41</span>

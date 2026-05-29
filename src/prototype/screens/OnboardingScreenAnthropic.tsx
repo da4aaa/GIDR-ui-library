@@ -788,7 +788,7 @@ function AnthropicLandingScreen({ onProcedureSelect, jobName }: { onProcedureSel
             <Menu size={16} style={{ color: AN.textSecondary }} />
           </button>
           <div className="flex-1 flex justify-center">
-            <span style={{ fontFamily: AN.font, fontSize: 13, fontWeight: 500, color: AN.muted, letterSpacing: '0.02em' }}>Company-Logo</span>
+            <img src="/icons/company-logo.png" alt="Luxoft" style={{ height: 24, width: 'auto' }} />
           </div>
           <div className="w-[38px] shrink-0" />
         </div>
@@ -1220,6 +1220,8 @@ function GuidedProcedureScreen({ title, onClose, instanceInfo }: { title: string
     })
   }
   const [showAttachMenu, setShowAttachMenu] = useState(false)
+  const [voiceMode, setVoiceMode] = useState(false)
+  const [muted, setMuted] = useState(false)
   const textareaRef = useRef<HTMLTextAreaElement>(null)
   const dragRef = useRef<{ startY: number; startH: number } | null>(null)
   const chatRef = useRef<HTMLDivElement>(null)
@@ -1317,7 +1319,7 @@ function GuidedProcedureScreen({ title, onClose, instanceInfo }: { title: string
     || (!!PROCEDURE_STEPS[step].passFail && !stepPassFail[step])
     || (!!currentChecklist && !allChecked)
   const isBlocked = isSkip && !!PROCEDURE_STEPS[step].mandatory
-  const currentPanelH = collapsed ? PANEL_COLLAPSED : Math.min(panelHeight, panelMaxH)
+  const currentPanelH = voiceMode ? 0 : (collapsed ? PANEL_COLLAPSED : Math.min(panelHeight, panelMaxH))
 
   return (
     <motion.div
@@ -1370,35 +1372,82 @@ function GuidedProcedureScreen({ title, onClose, instanceInfo }: { title: string
         </button>
       </div>
 
-      {/* Chat / log area — flex-1 scroll, no absolute needed */}
+      {/* Chat / log area — single div, content switches based on voiceMode */}
       <div
         ref={chatRef}
         className="flex flex-col gap-4 px-5 py-4 [&::-webkit-scrollbar]:hidden"
-        style={{ flex: 1, overflowY: 'auto', minHeight: 0, WebkitOverflowScrolling: 'touch' } as React.CSSProperties}
+        style={{
+          flex: 1, overflowY: 'auto', minHeight: 0, WebkitOverflowScrolling: 'touch',
+          ...(voiceMode ? {
+            backgroundColor: AN.bg,
+            backgroundImage: 'radial-gradient(circle, rgba(130,120,200,0.28) 1.2px, transparent 1.2px)',
+            backgroundSize: '18px 18px',
+          } : {}),
+        } as React.CSSProperties}
       >
-        {instanceInfo && (
+        {voiceMode ? (
           <>
-            <div className="flex flex-col gap-2">
-              {PAST_RUNS.slice(0, instanceInfo.current - 1).map(run => (
-                <PastRunEntry key={run.runNumber} {...run} onOpenSummary={() => setPastSummaryRun(run)} />
-              ))}
+            {/* AI message — directly on dotted bg */}
+            <div className="flex flex-col gap-2 pt-1">
+              <p style={{ fontFamily: AN.font, fontSize: 16, fontWeight: 700, color: AN.ink, lineHeight: 1.3 }}>
+                {PROCEDURE_STEPS[step].title}
+              </p>
+              <p style={{ fontFamily: AN.font, fontSize: 14, color: AN.textSecondary, lineHeight: 1.6 }}>
+                {PROCEDURE_STEPS[step].description.split('\n\n')[0]}
+              </p>
+              <div className="flex items-center gap-3 mt-1">
+                <button style={{ padding: 0, background: 'none', border: 'none', cursor: 'pointer' }}>
+                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke={AN.muted} strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>
+                </button>
+                <button style={{ padding: 0, background: 'none', border: 'none', cursor: 'pointer' }}>
+                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke={AN.muted} strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"><path d="M14 9V5a3 3 0 0 0-3-3l-4 9v11h11.28a2 2 0 0 0 2-1.7l1.38-9a2 2 0 0 0-2-2.3z"/><path d="M7 22H4a2 2 0 0 1-2-2v-7a2 2 0 0 1 2-2h3"/></svg>
+                </button>
+                <button style={{ padding: 0, background: 'none', border: 'none', cursor: 'pointer' }}>
+                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke={AN.muted} strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"><path d="M10 15v4a3 3 0 0 0 3 3l4-9V2H5.72a2 2 0 0 0-2 1.7l-1.38 9a2 2 0 0 0 2 2.3z"/><path d="M17 2h2.67A2.31 2.31 0 0 1 22 4v7a2.31 2.31 0 0 1-2.33 2H17"/></svg>
+                </button>
+                <span style={{ fontFamily: AN.font, fontSize: 12, color: AN.coral, fontWeight: 500 }}>12 sources</span>
+              </div>
             </div>
-            <div className="flex items-center gap-3">
-              <div className="flex-1 h-px" style={{ background: AN.border }} />
-              <span style={{ fontFamily: AN.font, fontSize: 11, fontWeight: 500, color: AN.muted, letterSpacing: '0.06em', textTransform: 'uppercase' }}>
-                Run {instanceInfo.current}
-              </span>
-              <div className="flex-1 h-px" style={{ background: AN.border }} />
+            {/* Listening indicator */}
+            <div className="flex items-center gap-2.5">
+              <motion.div
+                animate={{ opacity: [0.5, 1, 0.5] }}
+                transition={{ duration: 1.6, repeat: Infinity, ease: 'easeInOut' }}
+                className="w-5 h-5 flex items-center justify-center shrink-0"
+                style={{ borderRadius: 9999, border: `1.5px solid ${AN.coral}` }}
+              >
+                <svg width="7" height="8" viewBox="0 0 7 8" fill="none"><polygon points="1,0.5 6.5,4 1,7.5" fill={AN.coral} /></svg>
+              </motion.div>
+              <span style={{ fontFamily: AN.font, fontSize: 14, color: AN.textSecondary }}>Listening ...</span>
             </div>
           </>
+        ) : (
+          <>
+            {instanceInfo && (
+              <>
+                <div className="flex flex-col gap-2">
+                  {PAST_RUNS.slice(0, instanceInfo.current - 1).map(run => (
+                    <PastRunEntry key={run.runNumber} {...run} onOpenSummary={() => setPastSummaryRun(run)} />
+                  ))}
+                </div>
+                <div className="flex items-center gap-3">
+                  <div className="flex-1 h-px" style={{ background: AN.border }} />
+                  <span style={{ fontFamily: AN.font, fontSize: 11, fontWeight: 500, color: AN.muted, letterSpacing: '0.06em', textTransform: 'uppercase' }}>
+                    Run {instanceInfo.current}
+                  </span>
+                  <div className="flex-1 h-px" style={{ background: AN.border }} />
+                </div>
+              </>
+            )}
+            {messages.map(msg => <MsgBubble key={msg.id} msg={msg} />)}
+          </>
         )}
-        {messages.map(msg => <MsgBubble key={msg.id} msg={msg} />)}
       </div>
 
       {/* Bottom block — shrink-0 in flow, visually floating */}
       <div
         className="shrink-0"
-        style={{ background: AN.surface, borderRadius: '16px 16px 0 0', boxShadow: '0 -4px 20px rgba(31,25,21,0.08)' }}
+        style={{ background: voiceMode ? 'transparent' : AN.surface, borderRadius: voiceMode ? 0 : '16px 16px 0 0', boxShadow: voiceMode ? 'none' : '0 -4px 20px rgba(31,25,21,0.08)' }}
       >
           {/* Step panel — animated height */}
           <motion.div
@@ -1406,29 +1455,50 @@ function GuidedProcedureScreen({ title, onClose, instanceInfo }: { title: string
             animate={{ height: currentPanelH }}
             transition={{ type: 'spring', stiffness: 400, damping: 40 }}
           >
-            {/* Drag handle — large touch target, touch-action none prevents scroll stealing */}
-            <div
-              className="flex items-center justify-center shrink-0"
-              style={{ height: 28, touchAction: 'none', cursor: 'ns-resize' }}
-              onPointerDown={e => { e.preventDefault(); onHandleDown(e) }}
-            >
-              <div style={{ width: 36, height: 4, background: AN.borderStrong, borderRadius: 9999, marginTop: 8 }} />
-            </div>
+            {/* Drag handle — hidden in voice mode */}
+            {!voiceMode && (
+              <div
+                className="flex items-center justify-center shrink-0"
+                style={{ height: 28, touchAction: 'none', cursor: 'ns-resize' }}
+                onPointerDown={e => { e.preventDefault(); onHandleDown(e) }}
+              >
+                <div style={{ width: 36, height: 4, background: AN.borderStrong, borderRadius: 9999, marginTop: 8 }} />
+              </div>
+            )}
 
-            {/* Step counter row — large touch target, tap to collapse/expand */}
+            {/* Step counter row — no collapse in voice mode */}
             <div
               className="flex items-center justify-between px-5 shrink-0"
-              style={{ height: 44, touchAction: 'none', cursor: 'pointer' }}
-              onPointerDown={e => { e.preventDefault(); onHandleDown(e) }}
-              onClick={() => setCollapsed(v => !v)}
+              style={{ height: 44, touchAction: voiceMode ? 'auto' : 'none', cursor: voiceMode ? 'default' : 'pointer', marginTop: voiceMode ? 12 : 0 }}
+              onPointerDown={voiceMode ? undefined : e => { e.preventDefault(); onHandleDown(e) }}
+              onClick={voiceMode ? undefined : () => setCollapsed(v => !v)}
             >
               <p style={{ fontFamily: AN.font, fontSize: 11, fontWeight: 500, letterSpacing: '0.06em', textTransform: 'uppercase', color: AN.coral }}>
                 Step {step + 1} of {PROCEDURE_STEPS.length} — {PROCEDURE_STEPS[step].title}
               </p>
-              <span style={{ fontFamily: AN.font, fontSize: 14, color: AN.muted, lineHeight: 1 }}>
-                {collapsed ? '↑' : '↓'}
-              </span>
+              {!voiceMode && (
+                <span style={{ fontFamily: AN.font, fontSize: 14, color: AN.muted, lineHeight: 1 }}>
+                  {collapsed ? '↑' : '↓'}
+                </span>
+              )}
             </div>
+
+            {/* Listening indicator — voice mode only */}
+            {voiceMode && (
+              <div className="flex items-center gap-2 px-5 pb-3">
+                <motion.div
+                  animate={{ opacity: [0.4, 1, 0.4] }}
+                  transition={{ duration: 1.6, repeat: Infinity, ease: 'easeInOut' }}
+                  className="w-4 h-4 flex items-center justify-center"
+                  style={{ borderRadius: 9999, background: AN.coral }}
+                >
+                  <svg width="8" height="8" viewBox="0 0 8 8" fill="none">
+                    <polygon points="2,1 7,4 2,7" fill="white" />
+                  </svg>
+                </motion.div>
+                <span style={{ fontFamily: AN.font, fontSize: 13, color: AN.textSecondary }}>Listening ...</span>
+              </div>
+            )}
 
             {/* Expanded content */}
             {!collapsed && (
@@ -1674,23 +1744,25 @@ function GuidedProcedureScreen({ title, onClose, instanceInfo }: { title: string
                     </div>
                   )}
                 </div>
-                <div className="flex items-center justify-between shrink-0">
-                  <button
-                    onClick={handleBack}
-                    disabled={step === 0}
-                    style={{ fontFamily: AN.font, fontSize: 13, fontWeight: 500, color: step === 0 ? AN.borderStrong : AN.ink, background: 'none', border: `1.5px solid ${step === 0 ? AN.borderStrong : AN.muted}`, borderRadius: 9999, padding: '11px 20px', cursor: step === 0 ? 'default' : 'pointer' }}
-                  >
-                    ← Back
-                  </button>
-                  <button
-                    onClick={isBlocked ? undefined : handleNext}
-                    className="flex items-center gap-1.5"
-                    style={{ fontFamily: AN.font, fontSize: 13, fontWeight: 600, color: '#FFFFFE', background: isBlocked ? AN.borderStrong : isSkip ? AN.muted : AN.secondary, borderRadius: 9999, border: 'none', padding: '12px 20px', cursor: isBlocked ? 'default' : 'pointer', opacity: isBlocked ? 0.7 : 1 }}
-                  >
-                    {isLast ? 'Complete' : (isSkip && !isBlocked) ? 'Skip' : 'Next'}
-                    {!isLast && (!isSkip || isBlocked) && <ArrowRight size={14} />}
-                  </button>
-                </div>
+                {!voiceMode && (
+                  <div className="flex items-center justify-between shrink-0">
+                    <button
+                      onClick={handleBack}
+                      disabled={step === 0}
+                      style={{ fontFamily: AN.font, fontSize: 13, fontWeight: 500, color: step === 0 ? AN.borderStrong : AN.ink, background: 'none', border: `1.5px solid ${step === 0 ? AN.borderStrong : AN.muted}`, borderRadius: 9999, padding: '11px 20px', cursor: step === 0 ? 'default' : 'pointer' }}
+                    >
+                      ← Back
+                    </button>
+                    <button
+                      onClick={isBlocked ? undefined : handleNext}
+                      className="flex items-center gap-1.5"
+                      style={{ fontFamily: AN.font, fontSize: 13, fontWeight: 600, color: '#FFFFFE', background: isBlocked ? AN.borderStrong : isSkip ? AN.muted : AN.secondary, borderRadius: 9999, border: 'none', padding: '12px 20px', cursor: isBlocked ? 'default' : 'pointer', opacity: isBlocked ? 0.7 : 1 }}
+                    >
+                      {isLast ? 'Complete' : (isSkip && !isBlocked) ? 'Skip' : 'Next'}
+                      {!isLast && (!isSkip || isBlocked) && <ArrowRight size={14} />}
+                    </button>
+                  </div>
+                )}
               </div>
             )}
           </motion.div>
@@ -1729,72 +1801,149 @@ function GuidedProcedureScreen({ title, onClose, instanceInfo }: { title: string
             )}
           </AnimatePresence>
 
-          {/* Chat input — auto-growing textarea */}
+          {/* Chat input — swaps between text and voice bar */}
           <div
             ref={chatInputRef}
             className="px-4"
             style={{ paddingTop: 10, paddingBottom: 'max(16px, env(safe-area-inset-bottom))', pointerEvents: 'auto' }}
           >
-            <div
-              className="flex flex-col px-3 pt-3 pb-2"
-              style={{
-                background: AN.surface, borderRadius: 24,
-                border: `1.5px solid ${AN.coral}`,
-                boxShadow: `0 0 0 3px rgba(147,85,209,0.10)`,
-                maxHeight: 400,
-              }}
-            >
-              {/* Textarea — top, grows and scrolls */}
-              <textarea
-                ref={textareaRef}
-                value={input}
-                rows={1}
-                onChange={e => {
-                  setInput(e.target.value)
-                  const el = e.target
-                  el.style.height = 'auto'
-                  el.style.height = Math.min(el.scrollHeight, 320) + 'px'
-                }}
-                onKeyDown={e => { if (e.key === 'Enter' && !e.shiftKey) { e.preventDefault(); handleSend(); if (textareaRef.current) textareaRef.current.style.height = '36px' } }}
-                placeholder="Chat with GIDR"
-                className="w-full bg-transparent outline-none resize-none overflow-y-auto"
-                style={{ fontFamily: AN.font, fontSize: 14, color: AN.ink, lineHeight: 1.55, minHeight: 36, maxHeight: 320, paddingBottom: 8 }}
-              />
-              {/* Button row — always at bottom */}
-              <div className="flex items-center gap-2 mt-1">
-                <button
-                  className="w-[36px] h-[36px] flex items-center justify-center shrink-0"
-                  style={{ background: AN.coralLight, borderRadius: 9999 }}
-                  onClick={() => setShowAttachMenu(v => !v)}
+            <AnimatePresence mode="wait" initial={false}>
+              {!voiceMode ? (
+                <motion.div
+                  key="text-input"
+                  initial={{ opacity: 0, y: 8 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  exit={{ opacity: 0, y: 8 }}
+                  transition={{ duration: 0.2, ease: easeOut }}
+                  className="flex flex-col px-3 pt-3 pb-2"
+                  style={{
+                    background: AN.surface, borderRadius: 24,
+                    border: `1.5px solid ${AN.coral}`,
+                    boxShadow: `0 0 0 3px rgba(147,85,209,0.10)`,
+                    maxHeight: 400,
+                  }}
                 >
-                  <Plus size={16} style={{ color: AN.coral }} />
-                </button>
-                <div className="flex-1" />
-                <button className="w-[36px] h-[36px] flex items-center justify-center shrink-0" style={{ background: AN.coralLight, borderRadius: 9999 }}>
-                  <Mic size={16} style={{ color: AN.coral }} />
-                </button>
-                <button
-                  onClick={() => { handleSend(); if (textareaRef.current) textareaRef.current.style.height = '36px' }}
-                  className="w-[38px] h-[38px] flex items-center justify-center shrink-0"
-                  style={{ background: 'linear-gradient(107deg, #533C8B -20.3%, #6366B8 102.76%)', borderRadius: 24 }}
+                  <textarea
+                    ref={textareaRef}
+                    value={input}
+                    rows={1}
+                    onChange={e => {
+                      setInput(e.target.value)
+                      const el = e.target
+                      el.style.height = 'auto'
+                      el.style.height = Math.min(el.scrollHeight, 320) + 'px'
+                    }}
+                    onKeyDown={e => { if (e.key === 'Enter' && !e.shiftKey) { e.preventDefault(); handleSend(); if (textareaRef.current) textareaRef.current.style.height = '36px' } }}
+                    placeholder="Chat with GIDR"
+                    className="w-full bg-transparent outline-none resize-none overflow-y-auto"
+                    style={{ fontFamily: AN.font, fontSize: 14, color: AN.ink, lineHeight: 1.55, minHeight: 36, maxHeight: 320, paddingBottom: 8 }}
+                  />
+                  <div className="flex items-center gap-2 mt-1">
+                    <button
+                      className="w-[36px] h-[36px] flex items-center justify-center shrink-0"
+                      style={{ background: AN.coralLight, borderRadius: 9999 }}
+                      onClick={() => setShowAttachMenu(v => !v)}
+                    >
+                      <Plus size={16} style={{ color: AN.coral }} />
+                    </button>
+                    <div className="flex-1" />
+                    <button className="w-[36px] h-[36px] flex items-center justify-center shrink-0" style={{ background: AN.coralLight, borderRadius: 9999 }}>
+                      <Mic size={16} style={{ color: AN.coral }} />
+                    </button>
+                    <button
+                      onClick={() => {
+                        if (!input.trim()) { setVoiceMode(true); setCollapsed(false) }
+                        else { handleSend(); if (textareaRef.current) textareaRef.current.style.height = '36px' }
+                      }}
+                      className="w-[38px] h-[38px] flex items-center justify-center shrink-0"
+                      style={{ background: 'linear-gradient(107deg, #533C8B -20.3%, #6366B8 102.76%)', borderRadius: 24 }}
+                    >
+                      {input.trim() ? (
+                        <Send size={16} style={{ color: '#FFFFFE' }} />
+                      ) : (
+                        <svg width="18" height="14" viewBox="0 0 20 14" fill="none">
+                          <rect x="0" y="4" width="3" height="6" rx="1.5" fill="white" />
+                          <rect x="4.5" y="1" width="3" height="12" rx="1.5" fill="white" />
+                          <rect x="9" y="3" width="3" height="8" rx="1.5" fill="white" />
+                          <rect x="13.5" y="0" width="3" height="14" rx="1.5" fill="white" />
+                          <rect x="18" y="4" width="3" height="6" rx="1.5" fill="white" />
+                        </svg>
+                      )}
+                    </button>
+                  </div>
+                </motion.div>
+              ) : (
+                <motion.div
+                  key="voice-bar"
+                  initial={{ opacity: 0, y: 8 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  exit={{ opacity: 0, y: 8 }}
+                  transition={{ duration: 0.2, ease: easeOut }}
+                  className="flex items-center gap-3"
+                  style={{ height: 56 }}
                 >
-                  {input.trim() ? (
-                    <Send size={16} style={{ color: '#FFFFFE' }} />
-                  ) : (
-                    <svg width="18" height="14" viewBox="0 0 20 14" fill="none">
+                  {/* Attach */}
+                  <button
+                    className="w-[48px] h-[48px] flex items-center justify-center shrink-0"
+                    style={{ background: AN.surface, borderRadius: 9999, boxShadow: '0 2px 8px rgba(31,25,21,0.10)' }}
+                  >
+                    <Plus size={20} style={{ color: AN.ink }} />
+                  </button>
+                  <div className="flex-1" />
+                  {/* Mute/unmute */}
+                  <button
+                    className="w-[48px] h-[48px] flex items-center justify-center shrink-0"
+                    style={{ background: AN.surface, borderRadius: 9999, boxShadow: '0 2px 8px rgba(31,25,21,0.10)', opacity: muted ? 0.45 : 1 }}
+                    onClick={() => setMuted(v => !v)}
+                  >
+                    <Mic size={20} style={{ color: AN.ink }} />
+                  </button>
+                  {/* Stop */}
+                  <button
+                    className="flex items-center justify-center gap-2 h-[48px] px-5 shrink-0"
+                    style={{ background: 'linear-gradient(107deg, #533C8B -20.3%, #6366B8 102.76%)', borderRadius: 9999, minWidth: 120 }}
+                    onClick={() => { setVoiceMode(false); setMuted(false) }}
+                  >
+                    <span style={{ fontFamily: AN.font, fontSize: 15, fontWeight: 600, color: '#FFFFFE' }}>Stop</span>
+                    <svg width="20" height="14" viewBox="0 0 20 14" fill="none">
                       <rect x="0" y="4" width="3" height="6" rx="1.5" fill="white" />
                       <rect x="4.5" y="1" width="3" height="12" rx="1.5" fill="white" />
                       <rect x="9" y="3" width="3" height="8" rx="1.5" fill="white" />
                       <rect x="13.5" y="0" width="3" height="14" rx="1.5" fill="white" />
                       <rect x="18" y="4" width="3" height="6" rx="1.5" fill="white" />
                     </svg>
-                  )}
-                </button>
-              </div>
-            </div>
+                  </button>
+                </motion.div>
+              )}
+            </AnimatePresence>
           </div>
         </div>
       </div>
+
+      {/* Voice mode glow border */}
+      <AnimatePresence>
+        {voiceMode && (
+          <>
+            <style>{`@keyframes voice-glow{0%,100%{opacity:.7}50%{opacity:1}}`}</style>
+            <motion.div
+              key="voice-glow"
+              className="absolute inset-0 pointer-events-none"
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              transition={{ duration: 0.4 }}
+              style={{
+                borderRadius: 'inherit',
+                border: '2.5px solid #A855C8',
+                boxShadow: '0 0 20px rgba(168,85,200,0.5), inset 0 0 20px rgba(99,102,184,0.08)',
+                animation: 'voice-glow 2.2s ease-in-out infinite',
+                zIndex: 50,
+                pointerEvents: 'none',
+              }}
+            />
+          </>
+        )}
+      </AnimatePresence>
     </motion.div>
   )
 }

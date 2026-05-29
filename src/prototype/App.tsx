@@ -1,16 +1,31 @@
-import { HashRouter, Routes, Route } from 'react-router-dom'
+import { HashRouter, Routes, Route, useLocation } from 'react-router-dom'
 import { Index } from './Index'
-import { ChatScreen } from './screens/ChatScreen'
 import { OnboardingScreen } from './screens/OnboardingScreen'
+import { OnboardingScreenStripe } from './screens/OnboardingScreenStripe'
+import { OnboardingScreenAnthropic, OnboardingScreenAnthropicMobile } from './screens/OnboardingScreenAnthropic'
+import { ProtoDrawer } from './components/ProtoDrawer'
+
+function AppInner() {
+  const { pathname } = useLocation()
+  const isMobile = pathname === '/mobile-live'
+  return (
+    <>
+      {!isMobile && <ProtoDrawer />}
+      <Routes>
+        <Route path="/" element={<Index />} />
+        <Route path="/mobile-v0" element={<OnboardingScreen />} />
+        <Route path="/mobile-v0-stripe" element={<OnboardingScreenStripe />} />
+        <Route path="/mobile-v0-anthropic" element={<OnboardingScreenAnthropic />} />
+        <Route path="/mobile-live" element={<OnboardingScreenAnthropicMobile />} />
+      </Routes>
+    </>
+  )
+}
 
 export function App() {
   return (
     <HashRouter>
-      <Routes>
-        <Route path="/" element={<Index />} />
-        <Route path="/chat-screen" element={<ChatScreen />} />
-        <Route path="/onboarding" element={<OnboardingScreen />} />
-      </Routes>
+      <AppInner />
     </HashRouter>
   )
 }

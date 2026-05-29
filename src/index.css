@@ -4,3 +4,60 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+@layer base {
+  :root {
+    /* ─── SEMANTIC TOKENS ────────────────────────────────────────────
+       Values sourced from primitive color groups in tailwind.config.ts.
+       Components should use these via Tailwind semantic classes,
+       not the primitive classes (e.g. bg-brand not bg-accent-1-800).
+    ─────────────────────────────────────────────────────────────── */
+
+    /* Brand (accent-1 / teal) */
+    --color-brand:              #00b4c8;  /* accent-1/800 */
+    --color-brand-hover:        #33cbcc;  /* accent-1/900 */
+    --color-brand-subtle:       #e0f5f6;  /* accent-1/100 */
+    --color-brand-subtle-hover: #b8eced;  /* accent-1/200 */
+    --color-brand-foreground:   #fbfcfd;  /* neutral/000  */
+
+    /* Destructive */
+    --color-destructive:              #c82020;  /* service/error-800 */
+    --color-destructive-hover:        #a80000;  /* service/error-900 */
+    --color-destructive-subtle:       #fceaea;  /* service/error-200 */
+    --color-destructive-subtle-hover: #fceeee;  /* service/error-300 */
+    --color-destructive-foreground:   #fbfcfd;  /* neutral/000       */
+
+    /* Surfaces */
+    --color-surface-page:   #f0f4f5;  /* neutral/100 = bg/page-light  */
+    --color-surface-base:   #fbfcfd;  /* neutral/000                  */
+    --color-surface-sunken: #e4ebec;  /* bg/page-darker               */
+
+    /* Text */
+    --color-foreground:  #1a1a1a;  /* neutral/900 */
+    --color-muted:       #676c71;  /* neutral/700 */
+    --color-placeholder: #c9d0d9;  /* neutral/400 */
+
+    /* Border */
+    --color-border:        #e8ebef;  /* neutral/300      */
+    --color-border-strong: #1a1a1a;  /* neutral/900      */
+    --color-border-focus:  #00b4c8;  /* accent-1/800     */
+    --color-border-error:  #c82020;  /* service/error-800 */
+
+    /* Disabled */
+    --color-disabled:            #e8ebef;  /* neutral/300 */
+    --color-disabled-foreground: #bac2cb;  /* neutral/500 */
+
+    /* Status */
+    --color-status-success:    #e6f7ed;  /* service/success-200 */
+    --color-status-success-fg: #1a7a40;  /* service/success-800 */
+    --color-status-warning:    #fff8e0;  /* service/warning-200 */
+    --color-status-warning-fg: #c28000;  /* service/warning-800 */
+    --color-status-error:      #fceaea;  /* service/error-200   */
+    --color-status-error-fg:   #c82020;  /* service/error-800   */
+    --color-status-info:       #c7e1ff;  /* accent-2/200        */
+    --color-status-info-fg:    #1a6ccf;  /* accent-2/700        */
+
+    /* Ring (focus ring) */
+    --color-ring: #00b4c8;  /* accent-1/800 */
+  }
+}

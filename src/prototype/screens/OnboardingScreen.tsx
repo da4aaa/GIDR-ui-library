@@ -1,10 +1,12 @@
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useRef } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 import { Button } from '@/components/Button/Button'
 import { Input } from '@/components/Input/Input'
 import { Avatar } from '@/components/Avatar/Avatar'
 import { GidrCard } from '@/components/Cards/GidrCard'
 import svgPaths from '../components/svg-logo-paths'
+import { HeaderLogo } from '../components/HeaderLogo'
+import { GidrLandingScreen } from './GidrLandingScreen'
 
 // ─── Timing ──────────────────────────────────────────────────────────────────
 // 0–3.15s  logo animation plays
@@ -13,21 +15,20 @@ import svgPaths from '../components/svg-logo-paths'
 // 5.85s  form fades in
 
 // ─── Geometry ────────────────────────────────────────────────────────────────
-const PHONE_H = 812
 const LOGO_W = 238
 const LOGO_H = 107
 const LOGO_SCALE = 100 / LOGO_W                           // → renders at 100×45
 const LOGO_VIS_H = Math.round(LOGO_H * LOGO_SCALE)        // 45px
-
 const CONTENT_H = LOGO_VIS_H + 24 + 442 + 24 + 32        // ≈ 567px
-const CONTENT_TOP = (PHONE_H - CONTENT_H) / 2            // vertically centered
 
-// Logo element top: align visual top of scaled logo to CONTENT_TOP
-const LOGO_LOGIN_TOP = CONTENT_TOP - (LOGO_H - LOGO_VIS_H) / 2
-const LOGO_SPLASH_TOP = (PHONE_H - LOGO_H) / 2
-
-// Form starts below the logo's visual bottom + gap
-const FORM_TOP = CONTENT_TOP + LOGO_VIS_H + 24
+function computePositions(phoneH: number) {
+  const contentTop = (phoneH - CONTENT_H) / 2
+  return {
+    logoLoginTop: contentTop - (LOGO_H - LOGO_VIS_H) / 2,
+    logoSplashTop: (phoneH - LOGO_H) / 2,
+    formTop: contentTop + LOGO_VIS_H + 24,
+  }
+}
 
 // ─── Easing ──────────────────────────────────────────────────────────────────
 const easeOut = [0.16, 1, 0.3, 1] as const
@@ -180,9 +181,10 @@ function GoogleLogo() {
 
 // ─── Login screen ─────────────────────────────────────────────────────────────
 
-function LoginScreen({ onLogin }: { onLogin: () => void }) {
+function LoginScreen({ onLogin, phoneHeight }: { onLogin: () => void; phoneHeight: number }) {
   const [isLogin, setIsLogin] = useState(false)
   const [showForm, setShowForm] = useState(false)
+  const { logoLoginTop, logoSplashTop, formTop } = computePositions(phoneHeight)
 
   useEffect(() => {
     const t1 = setTimeout(() => setIsLogin(true), 5150)
@@ -199,7 +201,7 @@ function LoginScreen({ onLogin }: { onLogin: () => void }) {
         className="absolute"
         style={{ left: '50%', x: '-50%' }}
         animate={{
-          top: isLogin ? LOGO_LOGIN_TOP : LOGO_SPLASH_TOP,
+          top: isLogin ? logoLoginTop : logoSplashTop,
           scale: isLogin ? LOGO_SCALE : 1,
         }}
         transition={{ duration: 0.7, ease: easeOut }}
@@ -211,7 +213,7 @@ function LoginScreen({ onLogin }: { onLogin: () => void }) {
       {showForm && (
         <motion.div
           className="absolute flex flex-col gap-layout-lg"
-          style={{ left: 20, right: 20, top: FORM_TOP }}
+          style={{ left: 20, right: 20, top: formTop }}
           initial={{ opacity: 0, y: 10 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.45, ease: easeOut }}
@@ -268,48 +270,6 @@ function LoginScreen({ onLogin }: { onLogin: () => void }) {
   )
 }
 
-// ─── Static logo (header) ─────────────────────────────────────────────────────
-
-function HeaderLogo() {
-  return (
-    <svg width="100" height="45" viewBox="0 0 238 107" fill="none">
-      <defs>
-        <linearGradient gradientUnits="userSpaceOnUse" id="hl_g0" x1="26.9898" x2="84.097" y1="27.9815" y2="27.9815">
-          <stop stopColor="#513685" /><stop offset="1" stopColor="#6367BA" />
-        </linearGradient>
-        <linearGradient gradientUnits="userSpaceOnUse" id="hl_g1" x1="0" x2="90.3767" y1="69.3173" y2="69.3173">
-          <stop stopColor="#513685" /><stop offset="1" stopColor="#6367BA" />
-        </linearGradient>
-        <radialGradient cx="0" cy="0" gradientTransform="matrix(6.94624 -1.22144 -1.22481 -6.92712 35.2668 6.16565)" gradientUnits="userSpaceOnUse" id="hl_r0" r="1">
-          <stop stopColor="#6180C9" /><stop offset="0.70303" stopColor="#513685" /><stop offset="1" stopColor="#513685" />
-        </radialGradient>
-        <mask id="hl_m0" maskUnits="userSpaceOnUse" style={{ maskType: 'luminance' }}><path d={svgPaths.topArc} fill="white" /></mask>
-        <mask id="hl_m1" maskUnits="userSpaceOnUse" style={{ maskType: 'luminance' }}><path d={svgPaths.mainArc} fill="white" /></mask>
-        <mask id="hl_m2" maskUnits="userSpaceOnUse" style={{ maskType: 'luminance' }}><path d={svgPaths.largeStar} fill="white" /></mask>
-        <mask id="hl_m3" maskUnits="userSpaceOnUse" style={{ maskType: 'luminance' }}><path d={svgPaths.smallStar} fill="white" /></mask>
-      </defs>
-      <g mask="url(#hl_m0)"><path d={svgPaths.topArc} stroke="url(#hl_g0)" strokeWidth="10" fill="none" /></g>
-      <g mask="url(#hl_m1)"><path d={svgPaths.mainArc} stroke="url(#hl_g1)" strokeWidth="15" fill="none" /></g>
-      <g mask="url(#hl_m2)"><path d={svgPaths.largeStar} fill="#6367B9" /></g>
-      <g mask="url(#hl_m3)"><path d={svgPaths.smallStar} fill="url(#hl_r0)" /><path d={svgPaths.smallStar} fill="#533C8C" /></g>
-      <path d={svgPaths.arrow} fill="#1A1A1A" />
-      <path d={svgPaths.gidrG} fill="#1A1A1A" /><path d={svgPaths.gidrI1} fill="#1A1A1A" />
-      <path d={svgPaths.gidrD} fill="#1A1A1A" /><path d={svgPaths.gidrR} fill="#1A1A1A" />
-      <path d={svgPaths.gidrDot} fill="#1A1A1A" /><path d={svgPaths.gidrA} fill="#1A1A1A" />
-      <path d={svgPaths.gidrI2} fill="#1A1A1A" />
-      <path d={svgPaths.subG} fill="#1A1A1A" /><path d={svgPaths.subU} fill="#1A1A1A" />
-      <path d={svgPaths.subI1} fill="#1A1A1A" /><path d={svgPaths.subD1} fill="#1A1A1A" />
-      <path d={svgPaths.subE1} fill="#1A1A1A" /><path d={svgPaths.subD2} fill="#1A1A1A" />
-      <path d={svgPaths.subI2} fill="#1A1A1A" /><path d={svgPaths.subN1} fill="#1A1A1A" />
-      <path d={svgPaths.subT} fill="#1A1A1A" /><path d={svgPaths.subE2} fill="#1A1A1A" />
-      <path d={svgPaths.subL1} fill="#1A1A1A" /><path d={svgPaths.subL2} fill="#1A1A1A" />
-      <path d={svgPaths.subI3} fill="#1A1A1A" /><path d={svgPaths.subG2} fill="#1A1A1A" />
-      <path d={svgPaths.subE3} fill="#1A1A1A" /><path d={svgPaths.subN2} fill="#1A1A1A" />
-      <path d={svgPaths.subC} fill="#1A1A1A" /><path d={svgPaths.subE4} fill="#1A1A1A" />
-    </svg>
-  )
-}
-
 // ─── GIDR list data ───────────────────────────────────────────────────────────
 
 const GIDR_ITEMS = [
@@ -322,7 +282,7 @@ const GIDR_ITEMS = [
 
 // ─── Choose a GIDR screen ─────────────────────────────────────────────────────
 
-function ChooseGidrScreen() {
+function ChooseGidrScreen({ onSelect }: { onSelect: () => void }) {
   return (
     <motion.div
       className="absolute inset-0 bg-surface-sunken flex flex-col overflow-hidden z-10"
@@ -345,7 +305,7 @@ function ChooseGidrScreen() {
         <div className="h-full overflow-y-auto [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none]">
           <div className="flex flex-col gap-component-md px-[20px] pt-[8px] pb-[20px]">
             {GIDR_ITEMS.map((item, i) => (
-              <GidrCard key={i} {...item} className="w-full" />
+              <GidrCard key={i} {...item} className="w-full" onClick={onSelect} />
             ))}
           </div>
         </div>
@@ -367,18 +327,33 @@ function ChooseGidrScreen() {
 // ─── Main export ──────────────────────────────────────────────────────────────
 
 export function OnboardingScreen() {
-  const [screen, setScreen] = useState<'login' | 'gidr-select'>('login')
+  const [screen, setScreen] = useState<'login' | 'gidr-select' | 'gidr-landing'>('login')
+  const innerRef = useRef<HTMLDivElement>(null)
+  const [phoneHeight, setPhoneHeight] = useState(812)
+
+  useEffect(() => {
+    if (!innerRef.current) return
+    const ro = new ResizeObserver(entries => {
+      setPhoneHeight(entries[0].contentRect.height)
+    })
+    ro.observe(innerRef.current)
+    return () => ro.disconnect()
+  }, [])
 
   return (
-    <div className="flex items-center justify-center min-h-screen bg-gradient-to-br from-gray-900 to-gray-800">
-      <div className="relative w-[375px] h-[812px] rounded-[50px] shadow-2xl overflow-hidden border-[14px] border-black bg-black">
+    <div className="flex items-center justify-center h-screen bg-gradient-to-br from-gray-900 to-gray-800">
+      <div className="relative w-[375px] h-[calc(100vh-2rem)] max-h-[812px] rounded-[50px] shadow-2xl overflow-hidden border-[14px] border-black bg-black">
         <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[150px] h-[30px] bg-black rounded-b-3xl z-10" />
-        <div className="size-full overflow-hidden rounded-[36px] relative">
+        <div ref={innerRef} className="size-full overflow-hidden rounded-[36px] relative">
           <AnimatePresence>
-            {screen === 'login' ? (
-              <LoginScreen key="login" onLogin={() => setScreen('gidr-select')} />
-            ) : (
-              <ChooseGidrScreen key="gidr" />
+            {screen === 'login' && (
+              <LoginScreen key="login" onLogin={() => setScreen('gidr-select')} phoneHeight={phoneHeight} />
+            )}
+            {screen === 'gidr-select' && (
+              <ChooseGidrScreen key="gidr" onSelect={() => setScreen('gidr-landing')} />
+            )}
+            {screen === 'gidr-landing' && (
+              <GidrLandingScreen key="landing" />
             )}
           </AnimatePresence>
         </div>

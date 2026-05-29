@@ -14,20 +14,27 @@ export interface Proto {
 
 export const PROTOTYPES: Proto[] = [
   {
-    id: 'onboarding',
-    name: 'Onboarding',
+    id: 'mobile-v0',
+    name: 'Mobile v.0',
     description: 'App launch animation → login screen. Splash logo moves to login position.',
     status: 'in-progress',
     branch: 'proto/onboarding',
     createdAt: '2026-05-05',
   },
   {
-    id: 'chat-screen',
-    name: 'Chat Screen',
-    description: 'Header, AI/user message thread, input bar. Core GIDR conversation flow.',
+    id: 'mobile-v0-anthropic',
+    name: 'Mobile v.0 — Anthropic',
+    description: 'Same flow with Anthropic/Claude design: warm cream #FAF9F5, terracotta #C4553D CTA, coral left-border research cards.',
     status: 'in-progress',
-    branch: 'proto/chat-screen',
-    createdAt: '2026-04-30',
-    missingComponents: ['ChatInputBar'],
+    branch: 'proto/guided-procedure',
+    createdAt: '2026-05-28',
+  },
+  {
+    id: 'mobile-v0-stripe',
+    name: 'Mobile v.0 — Stripe',
+    description: 'Same flow as Mobile v.0 with Stripe design system applied (violet, mist surfaces, pill buttons).',
+    status: 'in-progress',
+    branch: 'proto/guided-procedure',
+    createdAt: '2026-05-28',
   },
 ]
