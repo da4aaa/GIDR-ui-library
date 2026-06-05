@@ -37,28 +37,28 @@ export const TypeScale: Story = {
       <Specimen
         token="text-heading-lg"
         className="text-heading-lg font-sans"
-        fontFamily="Nunito Sans"
+        fontFamily="Inter"
         spec="18px / 24px / Bold"
         sample="Morning triage — 4 jobs today"
       />
       <Specimen
         token="text-heading"
         className="text-heading font-sans"
-        fontFamily="Nunito Sans"
+        fontFamily="Inter"
         spec="16px / 22px / Bold"
         sample="Konica Minolta C554e"
       />
       <Specimen
         token="text-body-bold"
         className="text-body-bold font-sans"
-        fontFamily="Nunito Sans"
+        fontFamily="Inter"
         spec="14px / 20px / Bold"
         sample="Transfer Belt Unit — A0EDR70000"
       />
       <Specimen
         token="text-body-semi"
         className="text-body-semi font-sans"
-        fontFamily="Nunito Sans"
+        fontFamily="Inter"
         spec="14px / 20px / SemiBold"
         sample="E-3203 secondary transfer error"
       />
@@ -110,7 +110,7 @@ export const TextOnBackgrounds: Story = {
         <div key={label} className={`${bg} rounded-xl p-5 border border-black/5`}>
           <p className="text-[10px] font-mono mb-3" style={{ color: dark ? '#94a3b8' : '#94a3b8' }}>{label}</p>
           <div className="flex flex-col gap-1">
-            <p className={`text-heading font-sans ${dark ? 'text-neutral-900' : 'text-white'}`}>Heading — Nunito Sans Bold</p>
+            <p className={`text-heading font-sans ${dark ? 'text-neutral-900' : 'text-white'}`}>Heading — Inter Bold</p>
             <p className={`text-body font-body ${dark ? 'text-neutral-800' : 'text-white'}`}>Body text — Inter Regular — reads well at this size</p>
             <p className={`text-caption font-body ${dark ? 'text-neutral-600' : 'text-white opacity-70'}`}>Caption — timestamp · metadata · secondary info</p>
           </div>
@@ -125,7 +125,7 @@ export const FontFamilies: Story = {
   render: () => (
     <div className="flex flex-col gap-8">
       <div className="flex flex-col gap-3">
-        <p className="font-mono text-[11px] text-neutral-500">font-sans — Nunito Sans — headings, buttons, labels, brand text</p>
+        <p className="font-mono text-[11px] text-neutral-500">font-sans — Inter — headings, buttons, labels, brand text</p>
         <p className="font-sans font-normal text-[32px] text-neutral-900 leading-tight">GIDR AI Field Assistant</p>
         <p className="font-sans font-semibold text-[20px] text-neutral-900">abcdefghijklmnopqrstuvwxyz ABCDEFGHIJKLMNOPQRSTUVWXYZ 0123456789</p>
       </div>

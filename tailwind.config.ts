@@ -30,8 +30,7 @@
 //   Heading-lg   → text-heading-lg       18px/24px bold      — page headings
 //
 // FONT FAMILIES
-//   Nunito Sans  → font-sans    headings, buttons, labels
-//   Inter        → font-body    body text, captions, data
+//   Inter        → font-sans / font-body    all text
 //
 // ─── COLOR TIERS ─────────────────────────────────────────────────────────────
 //
@@ -269,7 +268,7 @@ export default {
       },
 
       fontFamily: {
-        sans: ['"Nunito Sans"', 'sans-serif'],
+        sans: ['Inter', 'sans-serif'],
         body: ['Inter', 'sans-serif'],
       },
       fontSize: {
