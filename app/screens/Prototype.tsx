@@ -2078,7 +2078,7 @@ function GuidedProcedureScreen({ title, onClose, instanceInfo }: { title: string
 
 // ─── Mobile export (no phone frame — for testing on real device) ─────────────
 
-export function OnboardingScreenAnthropicMobile() {
+export function PrototypeScreenMobile() {
   const [screen, setScreen] = useState<'login' | 'gidr-select' | 'jobs' | 'gidr-landing' | 'procedure'>('login')
   const [procedureTitle, setProcedureTitle] = useState('')
   const [procedureInstanceInfo, setProcedureInstanceInfo] = useState<{ current: number; total: number } | undefined>()
@@ -2163,7 +2163,7 @@ export function OnboardingScreenAnthropicMobile() {
 
 // ─── Main export ──────────────────────────────────────────────────────────────
 
-export function OnboardingScreenAnthropic() {
+export function PrototypeScreen() {
   const [screen, setScreen] = useState<'login' | 'gidr-select' | 'jobs' | 'gidr-landing' | 'procedure'>('login')
   const [procedureTitle, setProcedureTitle] = useState('')
   const innerRef = useRef<HTMLDivElement>(null)

@@ -1,6 +1,6 @@
 import { HashRouter, Routes, Route, useLocation } from 'react-router-dom'
 import { Index } from './Index'
-import { OnboardingScreenAnthropic, OnboardingScreenAnthropicMobile } from './screens/OnboardingScreenAnthropic'
+import { PrototypeScreen, PrototypeScreenMobile } from './screens/Prototype'
 import { ProtoDrawer } from './components/ProtoDrawer'
 
 function AppInner() {
@@ -11,8 +11,8 @@ function AppInner() {
       {!isMobile && <ProtoDrawer />}
       <Routes>
         <Route path="/" element={<Index />} />
-        <Route path="/mobile-v0-anthropic" element={<OnboardingScreenAnthropic />} />
-        <Route path="/mobile-live" element={<OnboardingScreenAnthropicMobile />} />
+        <Route path="/mobile-v0-anthropic" element={<PrototypeScreen />} />
+        <Route path="/mobile-live" element={<PrototypeScreenMobile />} />
       </Routes>
     </>
   )
