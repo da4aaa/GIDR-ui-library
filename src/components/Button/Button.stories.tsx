@@ -8,31 +8,105 @@ const meta: Meta<typeof Button> = {
   component: Button,
   tags: ['autodocs'],
   argTypes: {
-    variant: { control: 'select', options: ['primary','secondary','chip','link'] },
-    size:    { control: 'select', options: ['s','m','l'] },
-    color:   { control: 'select', options: ['default','error','purple'] },
+    variant: { control: 'select', options: ['filled', 'stroked', 'ghost', 'link'] },
+    size:    { control: 'select', options: ['s', 'm', 'l'] },
+    color:   { control: 'select', options: ['default', 'error', 'purple'] },
+    iconLeft:  { table: { disable: true } },
+    iconRight: { table: { disable: true } },
   },
 }
 export default meta
 type Story = StoryObj<typeof Button>
 
-export const Primary: Story    = { args: { variant: 'primary',   children: 'Primary',   size: 'm' } }
-export const Secondary: Story  = { args: { variant: 'secondary', children: 'Secondary', size: 'm' } }
-export const Chip: Story       = { args: { variant: 'chip',      children: 'Quick reply', size: 's' } }
-export const WithIconLeft: Story  = { args: { variant: 'primary', children: 'Share', size: 'm', iconLeft: Share2 } }
-export const WithIconRight: Story = { args: { variant: 'secondary', children: 'Next', size: 'm', iconRight: ArrowRight } }
-export const Disabled: Story   = { args: { variant: 'primary', children: 'Disabled', size: 'm', disabled: true } }
+// ─── Sandbox (Controls panel) ─────────────────────────────────────────────────
+export const Sandbox: Story = {
+  args: { variant: 'filled', size: 'm', color: 'default', children: 'Button' },
+}
 
-export const AllSizes: Story = {
+// ─── Helper ──────────────────────────────────────────────────────────────────
+type BtnVariant = 'filled' | 'stroked' | 'ghost' | 'link'
+type BtnColor   = 'default' | 'error' | 'purple'
+
+const COLORS: BtnColor[]  = ['default', 'error', 'purple']
+const COLOR_LABELS: Record<BtnColor, string> = { default: 'Default', error: 'Error', purple: 'Purple' }
+
+function Grid({ variant }: { variant: BtnVariant }) {
+  return (
+    <div className="flex flex-col gap-8 p-4 bg-neutral-100 rounded-xl">
+      {COLORS.map(color => (
+        <div key={color} className="flex flex-col gap-3">
+          <p className="text-caption-md text-muted uppercase tracking-wide">{COLOR_LABELS[color]}</p>
+
+          {/* Sizes — no icon */}
+          <div className="flex gap-3 items-center flex-wrap">
+            <Button variant={variant} size="l" color={color}>Button L</Button>
+            <Button variant={variant} size="m" color={color}>Button M</Button>
+            <Button variant={variant} size="s" color={color}>Button S</Button>
+          </div>
+
+          {/* Icon Left */}
+          <div className="flex gap-3 items-center flex-wrap">
+            <Button variant={variant} size="l" color={color} iconLeft={Share2}>Icon Left L</Button>
+            <Button variant={variant} size="m" color={color} iconLeft={Share2}>Icon Left M</Button>
+            <Button variant={variant} size="s" color={color} iconLeft={Share2}>Icon Left S</Button>
+          </div>
+
+          {/* Icon Right */}
+          <div className="flex gap-3 items-center flex-wrap">
+            <Button variant={variant} size="l" color={color} iconRight={ArrowRight}>Icon Right L</Button>
+            <Button variant={variant} size="m" color={color} iconRight={ArrowRight}>Icon Right M</Button>
+            <Button variant={variant} size="s" color={color} iconRight={ArrowRight}>Icon Right S</Button>
+          </div>
+
+          {/* Disabled */}
+          <div className="flex gap-3 items-center flex-wrap">
+            <Button variant={variant} size="l" color={color} disabled>Disabled L</Button>
+            <Button variant={variant} size="m" color={color} disabled>Disabled M</Button>
+            <Button variant={variant} size="s" color={color} disabled>Disabled S</Button>
+          </div>
+        </div>
+      ))}
+    </div>
+  )
+}
+
+// ─── Per-type stories ─────────────────────────────────────────────────────────
+export const Filled: Story = {
+  render: () => <Grid variant="filled" />,
+}
+
+export const Stroked: Story = {
+  render: () => <Grid variant="stroked" />,
+}
+
+export const Ghost: Story = {
+  render: () => <Grid variant="ghost" />,
+}
+
+export const Link: Story = {
+  render: () => <Grid variant="link" />,
+}
+
+// ─── All variants at a glance ─────────────────────────────────────────────────
+export const AllVariants: Story = {
   render: () => (
-    <div className="flex gap-3 items-center flex-wrap">
-      <Button variant="primary" size="s">Small</Button>
-      <Button variant="primary" size="m">Medium</Button>
-      <Button variant="primary" size="l">Large</Button>
+    <div className="flex flex-col gap-6 p-4">
+      {(['filled', 'stroked', 'ghost', 'link'] as BtnVariant[]).map(variant => (
+        <div key={variant} className="flex flex-col gap-2">
+          <p className="text-caption-md text-muted uppercase tracking-wide">{variant}</p>
+          <div className="flex gap-3 items-center flex-wrap">
+            <Button variant={variant} size="m">Default</Button>
+            <Button variant={variant} size="m" color="error">Error</Button>
+            <Button variant={variant} size="m" color="purple">Purple</Button>
+            <Button variant={variant} size="m" disabled>Disabled</Button>
+          </div>
+        </div>
+      ))}
     </div>
   ),
 }
 
+// ─── Icon Buttons ─────────────────────────────────────────────────────────────
 export const IconButtons: Story = {
   render: () => (
     <div className="flex gap-3 items-center">
@@ -40,21 +114,6 @@ export const IconButtons: Story = {
       <IconButton icon={X} label="Close" size="s" />
       <IconButton icon={X} label="Close" size="m" />
       <IconButton icon={X} label="Close" size="l" />
-    </div>
-  ),
-}
-
-export const LinkButton: Story = { args: { variant: 'link', children: 'Learn more', size: 'm' } }
-export const ErrorButton: Story = { args: { variant: 'primary', color: 'error', children: 'Delete', size: 'm' } }
-export const PurpleButton: Story = { args: { variant: 'primary', color: 'purple', children: 'Upgrade', size: 'm' } }
-export const AllVariants: Story = {
-  render: () => (
-    <div className="flex gap-3 items-center flex-wrap">
-      <Button variant="primary">Primary</Button>
-      <Button variant="secondary">Secondary</Button>
-      <Button variant="primary" color="error">Error</Button>
-      <Button variant="primary" color="purple">Purple</Button>
-      <Button variant="link">Link</Button>
     </div>
   ),
 }

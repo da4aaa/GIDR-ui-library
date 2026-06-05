@@ -1,11 +1,10 @@
 import React from 'react'
 import ReactDOM from 'react-dom/client'
 import './index.css'
-import './mobile.css'
-import { OnboardingScreenAnthropicMobile } from './prototype/screens/OnboardingScreenAnthropic'
+import { App } from './prototype/App'
 
 ReactDOM.createRoot(document.getElementById('root')!).render(
   <React.StrictMode>
-    <OnboardingScreenAnthropicMobile />
+    <App />
   </React.StrictMode>
 )

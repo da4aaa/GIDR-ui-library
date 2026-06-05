@@ -1,6 +1,6 @@
 export { GidrCard } from './GidrCard'
-export { GuidedProcedureCard } from './GuidedProcedureCard'
-export { GuidedProcedureCardNew } from './GuidedProcedureCardNew'
+export { ProcedureCard } from './ProcedureCard'
+export type { ProcedureCardProps } from './ProcedureCard'
 export { ProcedureIcon } from './ProcedureIcon'
 export type { ProcedureIconType } from './ProcedureIcon'
 export { SourceCard } from './SourceCard'

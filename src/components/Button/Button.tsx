@@ -3,19 +3,35 @@ import { cn } from '@/lib/utils'
 import type { LucideIcon } from 'lucide-react'
 
 const buttonVariants = cva(
-  'inline-flex items-center justify-center gap-1.5 font-sans font-bold transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 whitespace-nowrap',
+  'inline-flex items-center justify-center gap-1.5 font-sans font-bold transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-ring disabled:pointer-events-none whitespace-nowrap',
   {
     variants: {
       variant: {
-        primary:   'bg-accent-1-800 text-white hover:bg-accent-1-900 focus-visible:ring-accent-1-800',
-        secondary: 'bg-transparent border-[1.5px] border-accent-1-900 text-accent-1-900 hover:bg-accent-1-100 focus-visible:ring-accent-1-800',
-        chip:      'bg-transparent border-[1.5px] border-accent-1-900 text-accent-1-900 hover:bg-accent-1-100 rounded-full focus-visible:ring-accent-1-800',
-        link:      'bg-transparent text-accent-1-800 hover:underline underline-offset-2 focus-visible:ring-accent-1-800 px-0',
+        filled: [
+          'rounded-full bg-brand text-brand-foreground',
+          'hover:bg-brand-hover',
+          'disabled:bg-disabled disabled:text-disabled-foreground',
+        ],
+        stroked: [
+          'rounded-full bg-transparent border-[1.5px] border-brand text-brand',
+          'hover:bg-brand-subtle hover:border-brand-hover hover:text-brand-hover',
+          'disabled:border-disabled disabled:text-disabled-foreground disabled:bg-transparent',
+        ],
+        ghost: [
+          'rounded-full bg-[var(--color-ghost-default)] text-foreground',
+          'hover:bg-[var(--color-ghost-default-hover)]',
+          'disabled:bg-disabled disabled:text-disabled-foreground',
+        ],
+        link: [
+          'bg-transparent text-[var(--color-link)] px-0',
+          'hover:text-[var(--color-link-hover)] hover:underline underline-offset-2',
+          'disabled:text-disabled-foreground',
+        ],
       },
       size: {
-        s: 'h-[30px] px-3 py-1.5 text-[13px] rounded-md',
-        m: 'h-9 px-4 py-2 text-[14px] rounded-md',
-        l: 'h-[38px] px-[22px] py-[9px] text-[14px] rounded-md',
+        s: 'h-[30px] px-3 py-1.5 text-[13px]',
+        m: 'h-9 px-4 py-2 text-[14px]',
+        l: 'h-[38px] px-[22px] py-[9px] text-[14px]',
       },
       color: {
         default: '',
@@ -24,17 +40,30 @@ const buttonVariants = cva(
       },
     },
     compoundVariants: [
-      { variant: 'chip', size: 's', class: 'h-[30px] px-3 py-1.5 text-[13px]' },
-      { variant: 'chip', size: 'm', class: 'h-9 px-4 py-2 text-[14px]' },
+      // link overrides size padding/height
       { variant: 'link', class: 'h-auto px-0 py-0' },
-      // error
-      { variant: 'primary',   color: 'error', class: 'bg-service-error-800 hover:bg-service-error-900 focus-visible:ring-service-error-800' },
-      { variant: 'secondary', color: 'error', class: 'border-service-error-800 text-service-error-800 hover:bg-service-error-200 focus-visible:ring-service-error-800' },
-      // purple
-      { variant: 'primary',   color: 'purple', class: 'bg-accent-3-vivid hover:bg-accent-3-800 focus-visible:ring-accent-3-vivid' },
-      { variant: 'secondary', color: 'purple', class: 'border-accent-3-vivid text-accent-3-vivid hover:bg-accent-3-100 focus-visible:ring-accent-3-vivid' },
+
+      // filled + error
+      { variant: 'filled', color: 'error',  class: 'bg-destructive hover:bg-destructive-hover disabled:bg-disabled' },
+      // filled + purple
+      { variant: 'filled', color: 'purple', class: 'bg-[var(--color-purple-brand)] hover:bg-[var(--color-purple-brand-hover)] disabled:bg-disabled' },
+
+      // stroked + error
+      { variant: 'stroked', color: 'error',  class: 'border-destructive text-destructive hover:bg-destructive-subtle hover:border-destructive-hover hover:text-destructive-hover disabled:border-disabled disabled:text-disabled-foreground' },
+      // stroked + purple
+      { variant: 'stroked', color: 'purple', class: 'border-[var(--color-purple-brand)] text-[var(--color-purple-brand)] hover:bg-accent-3-100 hover:border-[var(--color-purple-brand-hover)] hover:text-[var(--color-purple-brand-hover)] disabled:border-disabled disabled:text-disabled-foreground' },
+
+      // ghost + error
+      { variant: 'ghost', color: 'error',  class: 'bg-destructive text-destructive-foreground hover:bg-destructive-hover disabled:bg-disabled disabled:text-disabled-foreground' },
+      // ghost + purple
+      { variant: 'ghost', color: 'purple', class: 'bg-accent-3-400 text-foreground hover:bg-accent-3-500 disabled:bg-disabled' },
+
+      // link + error
+      { variant: 'link', color: 'error',  class: 'text-destructive hover:text-destructive-hover disabled:text-disabled-foreground' },
+      // link + purple
+      { variant: 'link', color: 'purple', class: 'text-accent-3-vivid hover:text-accent-3-800 disabled:text-disabled-foreground' },
     ],
-    defaultVariants: { variant: 'primary', size: 'm', color: 'default' },
+    defaultVariants: { variant: 'filled', size: 'm', color: 'default' },
   }
 )
 
@@ -47,7 +76,7 @@ interface ButtonProps extends Omit<React.ButtonHTMLAttributes<HTMLButtonElement>
   iconRight?: LucideIcon
 }
 
-export function Button({ variant = 'primary', size = 'm', color = 'default', iconLeft: IconLeft, iconRight: IconRight, children, className, ...props }: ButtonProps) {
+export function Button({ variant = 'filled', size = 'm', color = 'default', iconLeft: IconLeft, iconRight: IconRight, children, className, ...props }: ButtonProps) {
   return (
     <button className={cn(buttonVariants({ variant, size, color }), className)} {...props}>
       {IconLeft && <IconLeft size={iconSizes[size ?? 'm']} strokeWidth={1.5} />}

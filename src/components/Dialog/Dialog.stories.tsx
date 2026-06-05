@@ -18,7 +18,7 @@ type Story = StoryObj<typeof Dialog>
 const defaultActions = (
   <>
     <Button variant="link">Cancel</Button>
-    <Button variant="primary" size="m">Confirm</Button>
+    <Button variant="filled" size="m">Confirm</Button>
   </>
 )
 

@@ -87,7 +87,17 @@ export default {
           '800': '#43474a',
           '900': '#1a1a1a',
         },
-        // Figma DS group: Accent-1 (teal — primary brand)
+        // Figma DS group: Accent-4 (indigo — current brand)
+        'accent-4': {
+          '50':   '#e9e9f8',
+          '100':  '#dedafd',
+          '200':  '#c7c2f5',
+          '400':  '#bdb6f3',
+          '800':  '#5b51a1',
+          '900':  '#463b93',
+          'link': '#5946e4',
+        },
+        // Figma DS group: Accent-1 (teal — legacy)
         'accent-1': {
           '50':   '#f0fbfb',
           '100':  '#e0f5f6',
@@ -219,6 +229,39 @@ export default {
           'error-fg':   'var(--color-status-error-fg)',
           info:         'var(--color-status-info)',
           'info-fg':    'var(--color-status-info-fg)',
+        },
+
+        // Badge semantic colors
+        badge: {
+          brand:   { bg: 'var(--color-badge-brand-bg)',   fg: 'var(--color-badge-brand-fg)'   },
+          success: { bg: 'var(--color-badge-success-bg)', fg: 'var(--color-badge-success-fg)' },
+          slate:   { bg: 'var(--color-badge-slate-bg)',   fg: 'var(--color-badge-slate-fg)'   },
+          info:    { bg: 'var(--color-badge-info-bg)',     fg: 'var(--color-badge-info-fg)'    },
+          indigo:  { bg: 'var(--color-badge-indigo-bg)',   fg: 'var(--color-badge-indigo-fg)'  },
+          purple:  { bg: 'var(--color-badge-purple-bg)',   fg: 'var(--color-badge-purple-fg)'  },
+          blue:    { bg: 'var(--color-badge-blue-bg)',     fg: 'var(--color-badge-blue-fg)'    },
+          warning: { bg: 'var(--color-badge-warning-bg)', fg: 'var(--color-badge-warning-fg)' },
+          error:   { bg: 'var(--color-badge-error-bg)',   fg: 'var(--color-badge-error-fg)'   },
+          neutral: { bg: 'var(--color-badge-neutral-bg)', fg: 'var(--color-badge-neutral-fg)' },
+        },
+
+        // Purple brand (filled-purple button)
+        'purple-brand': {
+          DEFAULT: 'var(--color-purple-brand)',
+          hover:   'var(--color-purple-brand-hover)',
+        },
+
+        // Ghost interactive backgrounds
+        ghost: {
+          DEFAULT:  'var(--color-ghost-default)',
+          hover:    'var(--color-ghost-default-hover)',
+          disabled: 'var(--color-disabled)',
+        },
+
+        // Link text color
+        'link-text': {
+          DEFAULT: 'var(--color-link)',
+          hover:   'var(--color-link-hover)',
         },
 
         // Ring (focus ring color)

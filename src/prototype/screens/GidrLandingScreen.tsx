@@ -1,34 +1,35 @@
 import { useState } from 'react'
 import { motion } from 'framer-motion'
 import { Menu } from 'lucide-react'
-import { GuidedProcedureCardNew } from '@/components/Cards/GuidedProcedureCardNew'
+import { ProcedureCard } from '@/components/Cards/ProcedureCard'
+import { ShieldCheck, Wrench } from 'lucide-react'
 import { GidrMenuScreen } from './GidrMenuScreen'
 
 const easeOut = [0.16, 1, 0.3, 1] as const
 
 const PROCEDURES = [
   {
-    illustrationType: 'Network' as const,
+    icon: ShieldCheck,
     title: 'Moving parts and machinery guided procedures',
     description: 'Verify protective equipment before starting field work',
-    badges: [{ label: 'Mandatory', color: 'blue' as const }],
+    badge: { label: 'Mandatory', color: 'blue' as const },
     stepCount: 12,
-    estimatedMinutes: 15,
+    runCount: 10,
   },
   {
-    illustrationType: 'Safety' as const,
+    icon: Wrench,
     title: 'Safe Operation of Machinery and Moving Parts',
     description: 'Verify protective equipment before starting field work',
-    badges: [{ label: 'Mandatory', color: 'blue' as const }],
+    badge: { label: 'Mandatory', color: 'blue' as const },
     stepCount: 12,
   },
   {
-    illustrationType: 'Network' as const,
+    icon: ShieldCheck,
     title: 'Moving parts and machinery guided procedures',
     description: 'Verify protective equipment before starting field work',
-    badges: [{ label: 'Mandatory', color: 'blue' as const }],
+    badge: { label: 'Mandatory', color: 'blue' as const },
     stepCount: 12,
-    estimatedMinutes: 15,
+    runCount: 10,
   },
 ]
 
@@ -76,7 +77,7 @@ export function GidrLandingScreen() {
               </div>
               <div className="flex flex-col gap-3">
                 {PROCEDURES.map((item, i) => (
-                  <GuidedProcedureCardNew key={i} {...item} />
+                  <ProcedureCard key={i} {...item} className="w-full" />
                 ))}
               </div>
             </div>

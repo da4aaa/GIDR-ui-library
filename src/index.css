@@ -6,6 +6,13 @@
 @tailwind utilities;
 
 @layer base {
+  /* Subpixel antialiasing matches Figma's rendering more closely than
+     the browser default grayscale — makes semibold/bold appear correct weight */
+  html {
+    -webkit-font-smoothing: subpixel-antialiased;
+    -moz-osx-font-smoothing: auto;
+  }
+
   :root {
     /* ─── SEMANTIC TOKENS ────────────────────────────────────────────
        Values sourced from primitive color groups in tailwind.config.ts.
@@ -13,12 +20,12 @@
        not the primitive classes (e.g. bg-brand not bg-accent-1-800).
     ─────────────────────────────────────────────────────────────── */
 
-    /* Brand (accent-1 / teal) */
-    --color-brand:              #00b4c8;  /* accent-1/800 */
-    --color-brand-hover:        #33cbcc;  /* accent-1/900 */
-    --color-brand-subtle:       #e0f5f6;  /* accent-1/100 */
-    --color-brand-subtle-hover: #b8eced;  /* accent-1/200 */
-    --color-brand-foreground:   #fbfcfd;  /* neutral/000  */
+    /* Brand (accent-4 / indigo) */
+    --color-brand:              #5b51a1;  /* accent-4/800 */
+    --color-brand-hover:        #463b93;  /* accent-4/900 */
+    --color-brand-subtle:       #e9e9f8;  /* accent-4/50  — stroked hover bg */
+    --color-brand-subtle-hover: #dedafd;  /* accent-4/100 */
+    --color-brand-foreground:   #ffffff;  /* white */
 
     /* Destructive */
     --color-destructive:              #c82020;  /* service/error-800 */
@@ -40,7 +47,7 @@
     /* Border */
     --color-border:        #e8ebef;  /* neutral/300      */
     --color-border-strong: #1a1a1a;  /* neutral/900      */
-    --color-border-focus:  #00b4c8;  /* accent-1/800     */
+    --color-border-focus:  #5b51a1;  /* accent-4/800     */
     --color-border-error:  #c82020;  /* service/error-800 */
 
     /* Disabled */
@@ -57,7 +64,41 @@
     --color-status-info:       #c7e1ff;  /* accent-2/200        */
     --color-status-info-fg:    #1a6ccf;  /* accent-2/700        */
 
+    /* Purple brand (accent-3 / filled-purple) */
+    --color-purple-brand:       #704685;  /* accent-3/800 */
+    --color-purple-brand-hover: #562f6a;  /* accent-3/850 */
+
+    /* Ghost interactive backgrounds */
+    --color-ghost-default:        #dedafd;  /* accent-4/100 */
+    --color-ghost-default-hover:  #bdb6f3;  /* accent-4/400 */
+
+    /* Link text */
+    --color-link:       #5946e4;  /* accent-4/link */
+    --color-link-hover: #5b51a1;  /* accent-4/800 = brand */
+
     /* Ring (focus ring) */
-    --color-ring: #00b4c8;  /* accent-1/800 */
+    --color-ring: #5b51a1;  /* accent-4/800 */
+
+    /* Badge colors — sourced from Figma Semantics/color/badge/* */
+    --color-badge-brand-bg:   #dedafd;  /* A4-200 */
+    --color-badge-brand-fg:   #463b93;  /* A4-900 */
+    --color-badge-success-bg: #def3e5;  /* Success-200 */
+    --color-badge-success-fg: #2da95b;  /* Success-700 */
+    --color-badge-slate-bg:   #dfe5ea;
+    --color-badge-slate-fg:   #334155;
+    --color-badge-info-bg:    #eef4f9;  /* A2-200 */
+    --color-badge-info-fg:    #1f95ff;  /* A2-900 */
+    --color-badge-indigo-bg:  #e8f7f7;  /* A1-200 */
+    --color-badge-indigo-fg:  #00b4c8;  /* A1-800 */
+    --color-badge-purple-bg:  #f0e3f7;  /* A3-200 */
+    --color-badge-purple-fg:  #562f6a;  /* A3-900 */
+    --color-badge-blue-bg:    #eef4f9;  /* A2-200 */
+    --color-badge-blue-fg:    #1f95ff;  /* A2-900 */
+    --color-badge-warning-bg: #fcf3e3;  /* Warning-200 */
+    --color-badge-warning-fg: #da8e0b;  /* Warning-800 */
+    --color-badge-error-bg:   #fceeee;  /* Error-300 */
+    --color-badge-error-fg:   #ff1c1c;  /* Error-800 */
+    --color-badge-neutral-bg: #e8ebef;  /* N300 */
+    --color-badge-neutral-fg: #676c71;  /* N700 */
   }
 }

@@ -1,5 +1,5 @@
 import { useNavigate } from 'react-router-dom'
-import { GitBranch, AlertCircle, ArrowRight } from 'lucide-react'
+import { GitBranch, AlertCircle, ArrowRight, Layers } from 'lucide-react'
 import { PROTOTYPES, type Proto, type ProtoStatus } from './registry'
 
 const STATUS_CONFIG: Record<ProtoStatus, { label: string; color: string; dot: string }> = {
@@ -83,6 +83,28 @@ export function Index() {
           <span className="font-body text-[14px] text-neutral-600">
             {active} active · {total} total — click to open, tell Claude to hand off or retire
           </span>
+        </div>
+
+        {/* design system */}
+        <div className="flex flex-col gap-3">
+          <div className="flex items-center gap-2">
+            <span className="font-sans font-bold text-[12px] uppercase tracking-wider text-neutral-500">Design System</span>
+          </div>
+          <div
+            onClick={() => window.open('http://localhost:6006', '_blank')}
+            className="group bg-white border border-neutral-200 rounded-xl p-5 flex items-center justify-between gap-3 cursor-pointer hover:border-brand hover:shadow-elevation-1 transition-all"
+          >
+            <div className="flex items-center gap-3">
+              <div className="size-9 rounded-lg bg-brand-subtle flex items-center justify-center shrink-0">
+                <Layers size={18} className="text-brand" />
+              </div>
+              <div className="flex flex-col gap-0.5">
+                <span className="font-sans font-bold text-[15px] text-neutral-900">Component Library</span>
+                <span className="font-body text-[13px] text-neutral-500">Storybook — localhost:6006</span>
+              </div>
+            </div>
+            <ArrowRight size={16} className="text-neutral-300 group-hover:text-brand shrink-0 transition-colors" />
+          </div>
         </div>
 
         {/* groups */}

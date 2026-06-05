@@ -6,9 +6,9 @@ import { Badge } from '@/components/Badge/Badge'
 interface Props { onSelect: () => void }
 
 const GIDRS = [
-  { category: 'Copier / Printer', title: 'Apollo Office Systems', description: 'AI assistant for Konica Minolta, Canon & Ricoh field service', procedureCount: 12, lastAccessed: '2h ago' },
-  { category: 'HVAC', title: 'HVAC Maintenance Suite', description: 'Step-by-step procedures for inspecting and servicing AHUs', procedureCount: 8, lastAccessed: '2 days ago' },
-  { category: 'Networking', title: 'Network Infrastructure', description: 'Structured cabling, switches, and wireless access points', procedureCount: 6, lastAccessed: '1 week ago' },
+  { category: 'Copier / Printer', title: 'Apollo Office Systems', description: 'AI assistant for Konica Minolta, Canon & Ricoh field service', procedureCount: 12, jobsInProgress: 3 },
+  { category: 'HVAC', title: 'HVAC Maintenance Suite', description: 'Step-by-step procedures for inspecting and servicing AHUs', procedureCount: 8, jobsInProgress: 1 },
+  { category: 'Networking', title: 'Network Infrastructure', description: 'Structured cabling, switches, and wireless access points', procedureCount: 6, jobsInProgress: 0 },
 ]
 
 export function GidrSelect({ onSelect }: Props) {
@@ -30,7 +30,7 @@ export function GidrSelect({ onSelect }: Props) {
         {/* section label */}
         <div className="flex items-center justify-between">
           <span className="font-sans font-bold text-[13px] text-neutral-700 uppercase tracking-wide">Recent</span>
-          <Badge label="3 active" color="green" size="sm" />
+          <Badge label="3 active" color="success" size="sm" />
         </div>
 
         {/* cards */}

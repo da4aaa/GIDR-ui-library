@@ -1,4 +1,5 @@
-import { List, Clock } from 'lucide-react'
+import { useState } from 'react'
+import { FileText, Wrench } from 'lucide-react'
 import { cn } from '@/lib/utils'
 import { Badge } from '../Badge/Badge'
 
@@ -7,43 +8,58 @@ interface GidrCardProps {
   title: string
   description: string
   procedureCount: number
-  lastAccessed: string
+  jobsInProgress: number
   isHovered?: boolean
   onClick?: () => void
   className?: string
 }
 
-export function GidrCard({ category, title, description, procedureCount, lastAccessed, isHovered, onClick, className }: GidrCardProps) {
+export function GidrCard({ category, title, description, procedureCount, jobsInProgress, isHovered: forceHovered, onClick, className }: GidrCardProps) {
+  const [hovered, setHovered] = useState(false)
+  const isHovered = forceHovered ?? hovered
+
   return (
     <div
       onClick={onClick}
+      onMouseEnter={() => setHovered(true)}
+      onMouseLeave={() => setHovered(false)}
       className={cn(
-        'w-[335px] rounded-lg shadow-elevation-1 p-component-lg flex flex-col gap-component-sm cursor-pointer transition-all',
-        isHovered
-          ? 'shadow-[0_2px_8px_0_rgba(0,0,0,0.06)]'
-          : 'bg-white border border-transparent',
+        'relative w-[335px] rounded-lg bg-surface-base cursor-pointer transition-all select-none',
+        'pt-6 pb-4 px-6 flex flex-col gap-5',
+        'active:scale-[0.98] active:shadow-none',
+        isHovered ? 'shadow-elevation-2' : 'shadow-elevation-1',
         className
       )}
-      style={isHovered ? {
-        background: 'linear-gradient(#E8F7F7, #E8F7F7) padding-box, linear-gradient(135deg, #33CBCC, #B684F7) border-box',
-        border: '2px solid transparent',
-      } : undefined}
     >
-      <div className="flex flex-col gap-component-xs">
+      {/* gradient border outside — pseudo-element extends 2px beyond the card */}
+      {isHovered && (
+        <span
+          aria-hidden
+          className="pointer-events-none absolute inset-[-2px] rounded-[14px]"
+          style={{ background: 'linear-gradient(135deg, #33CBCC, #B684F7)', zIndex: -1 }}
+        />
+      )}
+
+      {/* content */}
+      <div className="flex flex-col gap-3">
         <div className="w-fit">
-          <Badge label={category} color={isHovered ? 'green' : 'neutral'} size="sm" />
+          <Badge label={category} color={isHovered ? 'success' : 'neutral'} size="sm" />
         </div>
-        <p className="text-body-bold font-sans text-neutral-900">{title}</p>
-        <p className="text-body font-body text-neutral-700">{description}</p>
+        <div className="flex flex-col gap-2">
+          <p className="text-body-bold font-sans text-foreground">{title}</p>
+          <p className="text-body font-body text-muted">{description}</p>
+        </div>
       </div>
-      <div className="flex items-center gap-component-md pt-component-xs border-t border-neutral-200">
-        <span className="flex items-center gap-component-2xs text-caption font-body text-neutral-700">
-          <List size={14} strokeWidth={1.5} />
+
+      {/* footer */}
+      <div className="flex items-center gap-4">
+        <span className="flex items-center gap-1 text-caption font-body text-muted">
+          <FileText size={14} strokeWidth={1.5} />
           {procedureCount} procedures
         </span>
-        <span className="flex items-center gap-component-2xs text-caption font-body text-neutral-700">
-          <Clock size={14} strokeWidth={1.5} />
-          {lastAccessed}
+        <span className="flex items-center gap-1 text-caption font-body text-muted">
+          <Wrench size={14} strokeWidth={1.5} />
+          {jobsInProgress} jobs in progress
         </span>
       </div>
     </div>
