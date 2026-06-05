@@ -4,6 +4,23 @@ import { Dropdown } from '@/components/Dropdown/Dropdown'
 import { DropdownRow } from '@/components/Dropdown/DropdownRow'
 import { DropdownSection } from '@/components/Dropdown/DropdownSection'
 
+/**
+ * Select — dropdown trigger button showing the current selection. Pair with Dropdown for the full select pattern.
+ *
+ * ## Props
+ * - `placeholder`    — shown when no value is selected.
+ * - `value`          — the currently selected label string.
+ * - `isOpen`         — whether the associated Dropdown is visible. Rotates the chevron.
+ * - `disabled`       — disables the trigger button.
+ * - `hasAvatar`      — boolean. Shows an Avatar (xxsmall) before the value text.
+ * - `avatarInitials` — initials for the avatar. Falls back to the first 2 chars of value.
+ * - `onClick`        — called when the trigger is clicked; use to toggle the Dropdown.
+ *
+ * ## Rules
+ * - Select is only the trigger button — render Dropdown separately and manage isOpen in the parent.
+ * - Use hasAvatar=true when the selected item represents an organization or person.
+ * - See the WithDropdown story for the full composed pattern.
+ */
 const meta: Meta<typeof Select> = {
   title: 'Components/Select',
   component: Select,

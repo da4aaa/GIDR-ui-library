@@ -1,6 +1,20 @@
 import type { Meta, StoryObj } from '@storybook/react'
 import { RadioButton } from './RadioButton'
 
+/**
+ * RadioButton — single-select option within a group. Used in forms and filter panels where exactly one option must be chosen.
+ *
+ * ## Props
+ * - `label`    — option text. Also auto-generates the input id.
+ * - `checked`  — controlled checked state.
+ * - `disabled` — disables interaction and dims the control.
+ * - `name`     — standard HTML radio group name. Always set on every radio in the same group.
+ *
+ * ## Rules
+ * - Always pass name on every radio in the group so the browser enforces mutual exclusivity.
+ * - Always pass onChange with checked for controlled usage.
+ * - Do not use for multi-select — use Checkbox instead.
+ */
 const meta: Meta<typeof RadioButton> = {
   title: 'Components/RadioButton',
   component: RadioButton,

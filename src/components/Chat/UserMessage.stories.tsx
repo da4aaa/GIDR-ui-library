@@ -1,6 +1,20 @@
 import type { Meta, StoryObj } from '@storybook/react'
 import { UserMessage } from './UserMessage'
 
+/**
+ * UserMessage — right-aligned user message bubble in the chat thread. Supports text, image attachments, and mixed content.
+ *
+ * ## Props
+ * - `message`     — the user's text. Optional when type='attachment'.
+ * - `type`        — 'text' (default) | 'attachment'. 'attachment' renders only the first image at 50×50, no bubble.
+ * - `attachments` — array of `{ src, alt }`. Shown as 50×50 thumbnails above the message text inside the bubble.
+ *
+ * ## Rules
+ * - Right-aligned by design — do not override the flex justify-end.
+ * - type='attachment' renders a bare 50×50 image with no text wrapper.
+ * - type='text' with attachments shows thumbnails above the text inside the bubble.
+ * - Max bubble width is 80% of the container.
+ */
 const meta: Meta<typeof UserMessage> = {
   title: 'Components/Chat/UserMessage',
   component: UserMessage,

@@ -1,6 +1,22 @@
 import type { Meta, StoryObj } from '@storybook/react'
 import { GidrCard } from './GidrCard'
 
+/**
+ * GidrCard — machine category card on the GIDR landing screen. Represents a top-level equipment group with its procedure and job counts.
+ *
+ * ## Props
+ * - `category`       — category label shown as a Badge (e.g. 'HVAC', 'Electrical').
+ * - `title`          — card heading; the equipment group name.
+ * - `description`    — one-line summary of what the category covers.
+ * - `procedureCount` — total procedures in this category.
+ * - `jobsInProgress` — number of currently open jobs.
+ * - `isHovered`      — forces hover state (gradient border + elevated shadow). Managed internally by default.
+ * - `onClick`        — tap/click handler; navigates to the category detail screen.
+ *
+ * ## Rules
+ * - Width is fixed at 335px.
+ * - On hover: Badge color switches to 'success' and a teal-to-purple gradient border appears.
+ */
 const meta: Meta<typeof GidrCard> = {
   title: 'Components/Cards/GidrCard',
   component: GidrCard,

@@ -2,6 +2,21 @@ import type { Meta, StoryObj } from '@storybook/react'
 import { Dialog } from './Dialog'
 import { Button } from '../Button/Button'
 
+/**
+ * Dialog — modal overlay panel for confirmations, detail views, and forms. Fixed width 600px; height grows with content.
+ *
+ * ## Props
+ * - `title`    — dialog heading.
+ * - `children` — content slot. No fixed height or scrolling; grows to fit.
+ * - `actions`  — ReactNode in the footer, right-aligned. Typically: `<Button variant="link">Cancel</Button> + <Button variant="filled">Confirm</Button>`.
+ * - `onClose`  — renders a × button in the top-right corner when provided.
+ *
+ * ## Rules
+ * - Presentational only — does not manage open/closed state. Conditionally render from the parent.
+ * - The backdrop/overlay is not included — add it in the parent if needed.
+ * - Pair a destructive confirm action with color="error" on the Button.
+ * - Always provide a cancel path (via actions or onClose) so users can escape.
+ */
 const meta: Meta<typeof Dialog> = {
   title: 'Components/Dialog',
   component: Dialog,

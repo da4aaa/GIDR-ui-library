@@ -2,6 +2,28 @@ import type { Meta, StoryObj } from '@storybook/react'
 import { ArrowRight, ArrowUpRight, Plus, Circle } from 'lucide-react'
 import { Badge, type BadgeColor, type BadgeSize } from './Badge'
 
+/**
+ * Badge — compact inline label for status, category, or count. Used in cards, list rows, system messages, and table cells.
+ *
+ * ## Props
+ * - `label`          — text inside the badge. Omit for icon-only mode.
+ * - `color`          — 'brand' | 'success' | 'slate' | 'info' | 'indigo' | 'purple' | 'blue' | 'warning' | 'error' | 'neutral'
+ * - `size`           — 'sm'(12px) | 'md'(13px) | 'lg'(14px). Default: 'sm'.
+ * - `dot`            — boolean. Adds a colored dot before the label. Mutually exclusive with avatar and iconLeft.
+ * - `avatar`         — boolean. Shows an Avatar (xxsmall) before the label.
+ * - `avatarSrc`      — image URL for the avatar. Used when avatar=true.
+ * - `avatarInitials` — fallback initials when no avatarSrc. Used when avatar=true.
+ * - `avatarColor`    — '1'–'5'. Avatar background color. Used when avatar=true.
+ * - `iconLeft`       — LucideIcon. Overrides dot and avatar when set.
+ * - `iconRight`      — LucideIcon after the label. Overridden by onRemove.
+ * - `onRemove`       — adds a × dismiss button; overrides iconRight.
+ *
+ * ## Rules
+ * - dot, avatar, and iconLeft are mutually exclusive — only the first applicable one renders.
+ * - onRemove takes priority over iconRight when both are passed.
+ * - Omit label for icon-only badges (the padding adjusts automatically).
+ * - Color conventions: 'warning' = in-progress, 'success' = complete, 'blue' = mandatory, 'error' = critical.
+ */
 const meta: Meta<typeof Badge> = {
   title: 'Components/Badge',
   component: Badge,

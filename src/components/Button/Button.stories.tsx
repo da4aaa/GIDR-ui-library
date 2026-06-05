@@ -3,6 +3,24 @@ import { Share2, ArrowRight, X } from 'lucide-react'
 import { Button } from './Button'
 import { IconButton } from './IconButton'
 
+/**
+ * Button — primary interactive trigger. Used for form submissions, confirmations, and navigation actions.
+ * See IconButton (same file) for icon-only actions.
+ *
+ * ## Props
+ * - `variant`    — 'filled' | 'stroked' | 'ghost' | 'link'
+ * - `size`       — 's' | 'm' | 'l'. Default: 'm'.
+ * - `color`      — 'default' | 'error' | 'purple'. Default: 'default'.
+ * - `iconLeft`   — LucideIcon rendered before the label.
+ * - `iconRight`  — LucideIcon rendered after the label.
+ * - `disabled`   — disables interaction; all colors collapse to grey disabled tokens.
+ * - `children`   — button label text.
+ *
+ * ## Rules
+ * - 'filled' = primary action, 'stroked' = secondary, 'ghost' = tertiary, 'link' = inline text action.
+ * - Use color='error' for destructive actions (delete, revoke, disconnect).
+ * - Never pair two 'filled' buttons in the same action group — use filled + stroked or filled + link.
+ */
 const meta: Meta<typeof Button> = {
   title: 'Components/Button',
   component: Button,

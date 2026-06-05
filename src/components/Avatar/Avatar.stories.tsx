@@ -3,6 +3,25 @@ import type { Meta, StoryObj } from '@storybook/react'
 import { Pencil, Camera, Plus } from 'lucide-react'
 import { Avatar } from './Avatar'
 
+/**
+ * Avatar — circular user/entity representation. Used in profiles, message threads, assignment fields, and dropdown rows.
+ *
+ * ## Props
+ * - `type`           — 'image' | 'letter' | 'empty'. Empty shows a default user icon.
+ * - `size`           — 'xxsmall'(24px) | 'xsmall'(32px) | 'small'(48px) | 'medium'(72px) | 'large'(96px) | 'xlarge'(160px)
+ * - `color`          — '1'–'5'. Background color for letter/empty variants.
+ * - `src`            — Image URL. Only used when type='image'.
+ * - `initials`       — 1–2 characters shown uppercase. Only used when type='letter'.
+ * - `alt`            — Accessible alt text. Only used when type='image'.
+ * - `overlayIcon`    — LucideIcon rendered as an action badge in the bottom-right corner.
+ * - `onOverlayClick` — Click handler for the overlay badge. Required when overlayIcon is set.
+ * - `overlayLabel`   — Accessible label for the overlay button. Defaults to 'Edit'.
+ *
+ * ## Rules
+ * - xxsmall/xsmall sizes are used inside other components (Badge, DropdownRow). Avoid standalone use at those sizes.
+ * - overlayIcon requires onOverlayClick — the badge is a <button> and must be interactive.
+ * - Only pass initials when type='letter'; src only when type='image'.
+ */
 const meta: Meta<typeof Avatar> = {
   title: 'Components/Avatar',
   component: Avatar,

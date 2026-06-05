@@ -4,6 +4,27 @@ import { Dropdown } from './Dropdown'
 import { DropdownRow } from './DropdownRow'
 import { DropdownSection } from './DropdownSection'
 
+/**
+ * Dropdown — floating list container for menus and selection panels. Composes with DropdownRow and DropdownSection.
+ *
+ * ## Props
+ * - `hasSearch`         — boolean. Adds a search input at the top.
+ * - `searchPlaceholder` — placeholder text for the search input.
+ * - `searchValue`       — controlled search string.
+ * - `onSearchChange`    — called with the new value on each keystroke.
+ * - `children`          — DropdownRow and DropdownSection nodes.
+ *
+ * ## Composition
+ * - `DropdownSection` — non-interactive section label divider.
+ * - `DropdownRow`     — individual item. Types: 'default' | 'with-avatar' | 'with-checkbox' | 'with-icon'.
+ *                       States: 'default' | 'selected' | 'disabled'.
+ *
+ * ## Rules
+ * - Presentational only — does not manage open/closed state. Render conditionally from the parent.
+ * - Width is fixed at 260px.
+ * - Search filtering must be implemented in the parent; Dropdown only renders the search UI.
+ * - Pair with Select as the trigger button — see Select story WithDropdown.
+ */
 const meta: Meta<typeof Dropdown> = {
   title: 'Components/Dropdown',
   component: Dropdown,

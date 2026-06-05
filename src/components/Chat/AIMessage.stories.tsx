@@ -1,6 +1,22 @@
 import type { Meta, StoryObj } from '@storybook/react'
 import { AIMessage } from './AIMessage'
 
+/**
+ * AIMessage — GIDR AI response bubble in the chat thread. Wraps the AI's text content and provides copy/feedback/source actions.
+ *
+ * ## Props
+ * - `children`       — ReactNode; the AI's response text or formatted content.
+ * - `sourcesCount`   — number of cited sources. Renders a "N sources" link when provided.
+ * - `onCopy`         — handler for the copy icon button.
+ * - `onThumbsUp`     — handler for thumbs-up feedback.
+ * - `onThumbsDown`   — handler for thumbs-down feedback.
+ * - `onSourcesClick` — handler for the sources link; typically opens a citations panel.
+ *
+ * ## Rules
+ * - Left-aligned, no bubble background — AI messages render as plain text with a floating action bar below.
+ * - Omit sourcesCount when the AI's response has no citations.
+ * - All action handlers are optional; only pass the ones relevant to the context.
+ */
 const meta: Meta<typeof AIMessage> = {
   title: 'Components/Chat/AIMessage',
   component: AIMessage,

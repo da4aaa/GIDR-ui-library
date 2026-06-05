@@ -2,6 +2,19 @@ import type { Meta, StoryObj } from '@storybook/react'
 import { useState } from 'react'
 import { Tabs } from './Tabs'
 
+/**
+ * Tabs — pill-style tab switcher for sub-navigation within a screen (e.g. Overview / History / Notes on a job detail).
+ *
+ * ## Props
+ * - `tabs`     — array of `{ label: string; value: string; disabled?: boolean }`.
+ * - `value`    — the currently active tab's value string.
+ * - `onChange` — called with the new value when a tab is clicked.
+ *
+ * ## Rules
+ * - Fully controlled — manage active state in the parent.
+ * - disabled tabs are dimmed and unclickable; use for locked/unavailable sections.
+ * - Renders at intrinsic width — wrap in a full-width container if you need it to stretch.
+ */
 const meta: Meta<typeof Tabs> = {
   title: 'Components/Tabs',
   component: Tabs,

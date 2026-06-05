@@ -1,6 +1,23 @@
 import type { Meta, StoryObj } from '@storybook/react'
 import { SourceCard } from './SourceCard'
 
+/**
+ * SourceCard — reference source card shown in AI message citation panels. Links to the document or URL the AI cited.
+ *
+ * ## Props
+ * - `state`   — 'default' | 'hover' | 'active' | 'loading'.
+ *               'active' = user selected this source (blue border).
+ *               'loading' = content not yet fetched (animated skeleton rows).
+ * - `favicon` — URL to site favicon. Falls back to a Database icon.
+ * - `domain`  — domain name (e.g. 'support.example.com').
+ * - `title`   — document/page title.
+ * - `url`     — full URL, shown truncated.
+ *
+ * ## Rules
+ * - Width is fixed at 280px.
+ * - State is controlled externally — purely presentational.
+ * - Show at most 3–5 source cards per AI message.
+ */
 const meta: Meta<typeof SourceCard> = {
   title: 'Components/Cards/SourceCard',
   component: SourceCard,

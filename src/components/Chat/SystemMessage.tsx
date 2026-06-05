@@ -1,8 +1,6 @@
 import { ChevronRight } from 'lucide-react'
 import { cn } from '@/lib/utils'
-import { Badge } from '../Badge/Badge'
-
-type BadgeColor = 'neutral' | 'green' | 'blue' | 'purple' | 'error'
+import { Badge, type BadgeColor } from '../Badge/Badge'
 
 interface SystemMessageProps {
   title: string

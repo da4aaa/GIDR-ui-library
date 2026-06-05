@@ -2,6 +2,24 @@ import type { Meta, StoryObj } from '@storybook/react'
 import { Search, Eye } from 'lucide-react'
 import { Input } from './Input'
 
+/**
+ * Input — single-line text field with label, helper text, error state, and icon support.
+ *
+ * ## Props
+ * - `label`      — optional label above the input. Auto-generates the htmlFor/id pair.
+ * - `size`       — 'sm'(30px) | 'md'(38px, default).
+ * - `state`      — 'default' | 'error' | 'disabled'. Derived automatically from error/disabled props.
+ * - `error`      — error string shown below in red. Automatically sets state='error'.
+ * - `helperText` — helper string shown below in grey. Hidden when error is present.
+ * - `iconLeft`   — LucideIcon inside the left edge of the input border.
+ * - `iconRight`  — LucideIcon inside the right edge of the input border.
+ * - `disabled`   — sets state='disabled', prevents all interaction.
+ *
+ * ## Rules
+ * - State is derived automatically: disabled → 'disabled', error present → 'error', else 'default'.
+ * - Do not pass state='error' manually — just pass the error string.
+ * - helperText is hidden when error is set; they share the same slot.
+ */
 const meta: Meta<typeof Input> = {
   title: 'Components/Input',
   component: Input,

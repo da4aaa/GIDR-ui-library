@@ -1,6 +1,21 @@
 import type { Meta, StoryObj } from '@storybook/react'
 import { Toast } from './Toast'
 
+/**
+ * Toast — transient notification overlay for operation feedback. Four semantic types map to distinct icons and border colors.
+ *
+ * ## Props
+ * - `type`      — 'success' | 'error' | 'warning' | 'info'. Determines icon, border color, and icon tint.
+ * - `title`     — main notification text (bold, always shown).
+ * - `message`   — optional secondary detail text.
+ * - `action`    — optional `{ label: string; onClick: () => void }`. Renders a text link below the message.
+ * - `onDismiss` — renders an × button. Call to remove the toast.
+ *
+ * ## Rules
+ * - Purely presentational — manage show/hide and auto-dismiss timing in the parent (typically a toast queue).
+ * - 'success' = completed operation, 'error' = failure, 'warning' = recoverable issue, 'info' = neutral update.
+ * - Always provide onDismiss unless the toast auto-dismisses on a timer.
+ */
 const meta: Meta<typeof Toast> = {
   title: 'Components/Toast',
   component: Toast,
